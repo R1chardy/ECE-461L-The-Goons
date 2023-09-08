@@ -1,3 +1,3 @@
-# ECE461L_Team3
+# ECE461L The Goons
 
 Richard Yuan, Desheng Liu, Jwalanthi Ranganathan, Sid Benoy, Hubert Yang
