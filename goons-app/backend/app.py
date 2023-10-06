@@ -4,9 +4,10 @@ from config import uri
 
 app = Flask(__name__)
 client = MongoClient(uri)
-db = client["db_name"] # the input should be the database name of our MongoDB
-collection1 = db["collection_name"] # this should be the collection table (maybe account info table)
-collection2 = db["second_collection_name"] # this should be some other collection table (maybe the items table?)
+db = client["Application"] # main application database
+users = db["Users"] # user collection
+collection2 = db["Projects"] # projects collection
+# unsure that the second collection is needed for the login page, it should just be updating the users collection
 
 
 @app.route('/test', methods=['GET'])
@@ -16,7 +17,7 @@ def api_test():
 @app.route('/add_account', method=['POST'])
 def add_account():
     data = request.json # request should be a json with username/password
-    res = collection1.insert_one(data) # this inserts it into mongoDB. consider encrypting the password tho
+    res = users.insert_one(data) # this inserts it into mongoDB. consider encrypting the password tho
 
     if res.acknowledged:
         return jsonify({"message": "Account added successfuly."}), 201
