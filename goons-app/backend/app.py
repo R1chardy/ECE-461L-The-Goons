@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from pymongo import MongoClient
 from config import uri
 
@@ -7,8 +8,8 @@ client = MongoClient(uri)
 db = client["Application"] # main application database
 users = db["Users"] # user collection
 collection2 = db["Projects"] # projects collection
-# unsure that the second collection is needed for the login page, it should just be updating the users collection
 
+CORS(app, resources={r'/*': {'origins': '*'}})
 
 @app.route('/test', methods=['GET'])
 def api_test():
