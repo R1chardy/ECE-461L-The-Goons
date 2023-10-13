@@ -67,6 +67,8 @@ def get_project():
 
     return jsonify(response_data), 200
 
+# need to make /add_project route
 
+# need to make /get_project route
 if __name__ == '__main__':
     app.run(debug=True)
