@@ -15,20 +15,17 @@ function LoginPage() {
         });
         
         fetch('http://127.0.0.1:5000/login', {
-            mode: 'no-cors',
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: jsonString,
         })
-        .then(response => response.json())
+        .then(response => {return response.text()})
         .then(data => {
-            console.log("hi")
             console.log(data)
         })
         .catch(error => {
-            console.log("bye")
             console.log(error)
         });
     }
