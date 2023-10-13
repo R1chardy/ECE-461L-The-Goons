@@ -7,13 +7,14 @@ function Projects(){
     const[joined, setJoined] = useState(new Set())
     const [hwsCounts, setCounts] = useState(new Map())
 
-    const updateJoinPress = (num) =>{
+    const updateJoinPress = (num, code) =>{
         if(joined.has(num)){
             const newJoined = new Set(joined)
             newJoined.delete(num)
             setJoined(newJoined)
         }
         else{
+            //Talk with backend to see if (num,code) is valid
             const newJoined = new Set(joined)
             newJoined.add(num)
             setJoined(newJoined)

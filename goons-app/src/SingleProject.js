@@ -11,7 +11,7 @@ function SingleProject(props){
     const [code, setCode] = useState("")
 
     const JoinPressed = () =>{
-        props.onDataUpdate(prop1)
+        props.onDataUpdate(prop1, code)
     }
 
     const CheckPressed = (hws, num) =>{
