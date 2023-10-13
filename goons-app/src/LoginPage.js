@@ -22,10 +22,10 @@ function LoginPage() {
             },
             body: jsonString,
         })
-        .then(response => {return response.text()})
+        .then(response => {return response.json()})
         .then(data => {
             console.log(data)
-            setOutputMessage(data)
+            setOutputMessage(data.message)
         })
         .catch(error => {
             console.log(error)
@@ -46,14 +46,14 @@ function LoginPage() {
             },
             body: jsonString,
         })
-        .then(response => {return response.text()})
+        .then(response => {return response.json()})
         .then(data => {
             console.log(data)
-            setOutputMessage(data)
+            setOutputMessage(data.message)
         })
         .catch(error => {
             console.log(error)
-            setOutputMessage(error)
+            setOutputMessage(error.error)
         });
     }
 
@@ -67,7 +67,7 @@ function LoginPage() {
     return (
         <div className="Login">
             <p style={{marginLeft: rightShift+80+"px"}}>
-                Login
+                Login Page
             </p>
             <div className="Username">
                 <form>
@@ -92,7 +92,7 @@ function LoginPage() {
                 Sign Up
             </button>
             <div>
-                <label style={{marginLeft: rightShift+5+"px"}}>
+                <label style={{marginLeft: rightShift+80+"px"}}>
                     {outputMessage}
                 </label>
             </div>

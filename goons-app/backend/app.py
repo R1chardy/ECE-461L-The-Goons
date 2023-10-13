@@ -20,15 +20,15 @@ def add_account():
     data = request.get_json() # request should be a json with username/password
     # res = users.insert_one(data) # this inserts it into mongoDB. consider encrypting the password tho
 
-    if data is None:
-        return jsonify({'error': 'invalid input'}), 400
+    if data["username"] == "" or data["password"] == "":
+        return jsonify({'message': 'invalid input'}), 400
 
     username = data.get('username')
     password = data.get('password')
 
     usernameList = list(users.find({"username": username}))
     if len(usernameList) > 0:
-        return jsonify({'error': 'Username already exists'}), 400
+        return jsonify({'message': 'Username already exists'}), 400
     else:
         users.insert_one({"username": username, "password": password}) # inserts new acc in db    
         return jsonify({"message": "Account added successfuly."}), 201
@@ -37,8 +37,8 @@ def add_account():
 def login():
     data = request.get_json()  # Get the JSON data from the request body
 
-    if data is None:
-        return jsonify({'error': 'invalid input'}), 400
+    if data["username"] == "" or data["password"] == "":
+        return jsonify({'message': 'invalid input'}), 400
 
     username = data.get('username')
     password = data.get('password')
@@ -49,8 +49,8 @@ def login():
         if user["password"] == password:
             return jsonify({'message': 'Login successful'}), 200
         else:
-            return jsonify({'error': 'Invalid username or password'}), 401
-    return jsonify({'error': 'Invalid username or password'}), 401
+            return jsonify({'message': 'Invalid username or password'}), 401
+    return jsonify({'message': 'Invalid username or password'}), 401
 
 if __name__ == '__main__':
     app.run(debug=True)
