@@ -7,7 +7,7 @@ app = Flask(__name__)
 client = MongoClient(uri)
 db = client["Application"] # main application database
 users = db["Users"] # user collection
-collection2 = db["Projects"] # projects collection
+projects = db["Projects"] # projects collection
 
 CORS(app, resources={r'/*': {'origins': '*'}})
 
@@ -51,6 +51,22 @@ def login():
         else:
             return jsonify({'message': 'Invalid username or password'}), 401
     return jsonify({'message': 'Invalid username or password'}), 401
+
+@app.route('/get_project', methods=['GET'])
+def get_project():
+    data = request.get_json() 
+
+    username = data.get('username')
+    projectList = list(projects.find())
+    user_projectList = list(projects.find({"username": username}))
+
+    response_data = {
+        "projects": projectList,
+        "user_projects": user_projectList
+    }
+
+    return jsonify(response_data), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
