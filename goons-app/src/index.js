@@ -6,6 +6,7 @@ import LoginPage from './LoginPage';
 import ProjectPage from './ProjectPage'
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Projects from './Projects'
 // import Login from './components/Login';
 
 export default function Home() {
