@@ -7,6 +7,7 @@ function LoginPage() {
 
     const [user, setUser] = useState("")
     const[pass, setPass] = useState("")
+    const[outputMessage, setOutputMessage] = useState("")
 
     const loginPressed = () => {
         const jsonString = JSON.stringify({
@@ -24,9 +25,11 @@ function LoginPage() {
         .then(response => {return response.text()})
         .then(data => {
             console.log(data)
+            setOutputMessage(data)
         })
         .catch(error => {
             console.log(error)
+            setOutputMessage(error)
         });
     }
 
@@ -46,9 +49,11 @@ function LoginPage() {
         .then(response => {return response.text()})
         .then(data => {
             console.log(data)
+            setOutputMessage(data)
         })
         .catch(error => {
             console.log(error)
+            setOutputMessage(error)
         });
     }
 
@@ -86,7 +91,11 @@ function LoginPage() {
             <button onClick={signupPressed}>
                 Sign Up
             </button>
-            
+            <div>
+                <label style={{marginLeft: rightShift+5+"px"}}>
+                    {outputMessage}
+                </label>
+            </div>
         </div>
     )
 }
