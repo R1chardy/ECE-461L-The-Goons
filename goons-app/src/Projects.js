@@ -3,14 +3,14 @@ import SingleProject from './SingleProject';
 
 function Projects(){
 
-    const[joined, setJoined] = useState(-1)
+    const[joined, setJoined] = useState(new Set())
 
     const updateJoinPress = (num) =>{
         if(num === joined){
-            setJoined(-1)
+            setJoined(-1)   //Remove from set
         }
         else{
-            setJoined(num)
+            setJoined()  //Add to set
         }
     }
 
