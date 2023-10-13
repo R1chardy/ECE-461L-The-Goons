@@ -18,7 +18,7 @@ def api_test():
 @app.route('/add_account', methods=['POST'])
 def add_account():
     data = request.get_json() # request should be a json with username/password
-    res = users.insert_one(data) # this inserts it into mongoDB. consider encrypting the password tho
+    # res = users.insert_one(data) # this inserts it into mongoDB. consider encrypting the password tho
 
     if data is None:
         return jsonify({'error': 'invalid input'}), 400
@@ -30,7 +30,7 @@ def add_account():
     if len(usernameList) > 0:
         return jsonify({'error': 'Username already exists'}), 400
     else:
-        res = users.insert_one({"username": username, "password": password}) # inserts new acc in db    
+        users.insert_one({"username": username, "password": password}) # inserts new acc in db    
         return jsonify({"message": "Account added successfuly."}), 201
     
 @app.route('/login', methods=['POST'])

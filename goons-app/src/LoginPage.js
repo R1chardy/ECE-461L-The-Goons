@@ -30,6 +30,28 @@ function LoginPage() {
         });
     }
 
+    const signupPressed = () =>{
+        const jsonString = JSON.stringify({
+            username: user,
+            password: pass
+        });
+
+        fetch('http://127.0.0.1:5000/add_account', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonString,
+        })
+        .then(response => {return response.text()})
+        .then(data => {
+            console.log(data)
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
     const handleUserChange = (event) => {
         setUser(event.target.value)
     }
@@ -60,6 +82,9 @@ function LoginPage() {
             </div>
             <button onClick={loginPressed} style={{marginLeft: rightShift+80+"px"}}>
                 Login
+            </button>
+            <button onClick={signupPressed}>
+                Sign Up
             </button>
             
         </div>
