@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function LoginPage() {
+function ProjectPage() {
     const rightShift = 100; //Change this variable to shift everything right or left
 
     const loginPressed = (event) => {
@@ -10,7 +10,7 @@ function LoginPage() {
     return (
         <div className="Login">
             <p style={{marginLeft: rightShift+80+"px"}}>
-                TESTING THIS PAGE
+                This is a test
             </p>
             <div className="Username">
                 <form>
@@ -29,9 +29,11 @@ function LoginPage() {
                 </form>
             </div>
             <button onClick={loginPressed} style={{marginLeft: rightShift+80+"px"}}>
-                Login
+                Create Project
             </button>
             
         </div>
     )
 }
+
+export default ProjectPage;

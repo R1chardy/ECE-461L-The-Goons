@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-
-
+// import { Outlet, Link } from "react-router-dom";
 
 function LoginPage() {
     const rightShift = 100; //Change this variable to shift everything right or left
@@ -96,6 +95,7 @@ function LoginPage() {
                     {outputMessage}
                 </label>
             </div>
+            <a href="/ProjectPage">Project Page</a>
         </div>
     )
 }
