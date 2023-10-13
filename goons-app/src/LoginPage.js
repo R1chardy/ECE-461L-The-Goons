@@ -62,7 +62,7 @@ function LoginPage() {
     return (
         <div className="Login">
             <p style={{marginLeft: rightShift+80+"px"}}>
-                Login Page
+                Login
             </p>
             <div className="Username">
                 <form>
