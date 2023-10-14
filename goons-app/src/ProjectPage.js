@@ -31,7 +31,9 @@ function ProjectPage() {
             <button onClick={loginPressed} style={{marginLeft: rightShift+80+"px"}}>
                 Create Project
             </button>
-            
+            <h1 className="text-3xl font-bold underline">
+                Hello world!
+            </h1>
         </div>
     )
 }
