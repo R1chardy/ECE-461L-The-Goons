@@ -7,6 +7,8 @@ function Projects() {
     const[joined, setJoined] = useState(new Set())
     const [hwsCounts, setCounts] = useState(new Map())
 
+    const [projects, setProjects] = useState([]);
+
     const updateJoinPress = (num, code) => {
         if (joined.has(num)) {
             const newJoined = new Set(joined)
@@ -26,13 +28,21 @@ function Projects() {
         setCounts(newCounts)
     }
 
+    const onCreatePress = (name, code) =>{
+        //Check with backend
+        const newProject = {id: name, pass: code}
+        setProjects([...projects, newProject])
+    }
+
     return (
         <div class="bg-tailwind place-content-center flex">
             <div className='max-w-7xl flex'>
                 <div className='grow w-[800px]'>
                     <p className='text-4xl'>Manage Your Projects</p>
-                    <CreateProject></CreateProject>
-                    <SingleProject id={1} onDataUpdate={updateJoinPress} joined={joined} onHWUpdate={updateHWSets}></SingleProject>
+                    <CreateProject onCreatePress={onCreatePress}></CreateProject>
+                    <div>
+                    {projects.map((project) => (<SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} onHWUpdate={updateHWSets}></SingleProject>))}
+                    </div>
                 </div>
                 <div className='w-80'>
                     <p className='text-4xl'>Hardware Sets</p>

@@ -6,7 +6,7 @@ function CreateProject(props) {
     const [name, setName] = useState("")
 
     const CreatePressed = () => {
-
+        props.onCreatePress(name, code)
     }
 
     const handleCodeChange = (event) =>{
