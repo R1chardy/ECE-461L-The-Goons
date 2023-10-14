@@ -95,7 +95,7 @@ function LoginPage() {
                     {outputMessage}
                 </label>
             </div>
-            <a href="/ProjectPage">Project Page</a>
+            <a href="/Projects">Project Page</a>
         </div>
     )
 }

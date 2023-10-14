@@ -3,15 +3,28 @@ import SingleProject from './SingleProject';
 
 function Projects(){
 
-    const[joined, setJoined] = useState(-1)
+    const max = 50
+    const[joined, setJoined] = useState(new Set())
+    const [hwsCounts, setCounts] = useState(new Map())
 
-    const updateJoinPress = (num) =>{
-        if(num === joined){
-            setJoined(-1)
+    const updateJoinPress = (num, code) =>{
+        if(joined.has(num)){
+            const newJoined = new Set(joined)
+            newJoined.delete(num)
+            setJoined(newJoined)
         }
         else{
-            setJoined(num)
+            //Talk with backend to see if (num,code) is valid
+            const newJoined = new Set(joined)
+            newJoined.add(num)
+            setJoined(newJoined)
         }
+    }
+
+    const updateHWSets = (hws, num) => {
+        const newCounts = new Map(hwsCounts);
+        newCounts.set(hws, num);
+        setCounts(newCounts)
     }
 
     return (
@@ -23,9 +36,9 @@ function Projects(){
             <div>
                 <h1>Projects</h1>
                 <ul style={{listStyle: 'none'}}>
-                    <SingleProject prop1={1} onDataUpdate={updateJoinPress} prop3={joined}></SingleProject>
-                    <SingleProject prop1={2} onDataUpdate={updateJoinPress} prop3={joined}></SingleProject>
-                    <SingleProject prop1={3} onDataUpdate={updateJoinPress} prop3={joined}></SingleProject>
+                    <SingleProject prop1={1} onDataUpdate={updateJoinPress} prop3={joined} prop4={hwsCounts} prop5={max} onHWUpdate={updateHWSets}></SingleProject>
+                    <SingleProject prop1={2} onDataUpdate={updateJoinPress} prop3={joined} prop4={hwsCounts} prop5={max} onHWUpdate={updateHWSets}></SingleProject>
+                    <SingleProject prop1={3} onDataUpdate={updateJoinPress} prop3={joined} prop4={hwsCounts} prop5={max} onHWUpdate={updateHWSets}></SingleProject>
                 </ul>
             </div>
         </body> 

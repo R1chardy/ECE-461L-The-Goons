@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import LoginPage from './LoginPage';
-import ProjectPage from './ProjectPage'
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Projects from './Projects'
@@ -14,7 +12,7 @@ export default function Home() {
     <BrowserRouter>
       <Routes>
         <Route index element={<LoginPage />} />
-        <Route path="/ProjectPage" element={<ProjectPage />} />
+        <Route path="/Projects" element={<Projects />} />
       </Routes>
     </BrowserRouter>
   );
