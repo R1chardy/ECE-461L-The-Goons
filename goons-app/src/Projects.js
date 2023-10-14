@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SingleProject from './SingleProject';
+import CreateProject from './CreateProject'
 
 function Projects() {
     const max = 50
@@ -30,7 +31,8 @@ function Projects() {
             <div className='max-w-7xl flex'>
                 <div className='grow w-[800px]'>
                     <p className='text-4xl'>Manage Your Projects</p>
-                    <SingleProject id={1} onDataUpdate={updateJoinPress} joined={joined} prop4={hwsCounts} prop5={max} onHWUpdate={updateHWSets}></SingleProject>
+                    <CreateProject></CreateProject>
+                    <SingleProject id={1} onDataUpdate={updateJoinPress} joined={joined} onHWUpdate={updateHWSets}></SingleProject>
                 </div>
                 <div className='w-80'>
                     <p className='text-4xl'>Hardware Sets</p>

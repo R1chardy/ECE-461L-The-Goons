@@ -31,7 +31,7 @@ def add_account():
         return jsonify({'message': 'Username already exists'}), 400
     else:
         users.insert_one({"username": username, "password": password}) # inserts new acc in db    
-        return jsonify({"message": "Account added successfuly."}), 201
+        return jsonify({"message": "Account added successfully."}), 201
     
 @app.route('/login', methods=['POST'])
 def login():
