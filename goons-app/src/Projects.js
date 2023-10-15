@@ -41,7 +41,7 @@ function Projects() {
                     <p className='text-4xl'>Manage Your Projects</p>
                     <CreateProject onCreatePress={onCreatePress}></CreateProject>
                     <div>
-                    {projects.map((project) => (<SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} onHWUpdate={updateHWSets}></SingleProject>))}
+                    {projects.map((project) => (<SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} hwCounts={hwsCounts} onHWUpdate={updateHWSets}></SingleProject>))}
                     </div>
                 </div>
                 <div className='w-80'>
