@@ -5,11 +5,11 @@ function CreateProject(props) {
     const [code, setCode] = useState("")
     const [name, setName] = useState("")
 
-    const CreatePressed = () => {
+    const createPressed = () => {
         props.onCreatePress(name, code)
     }
 
-    const handleCodeChange = (event) =>{
+    const handleCodeChange = (event) => {
         setCode(event.target.value)
     }
 
@@ -18,20 +18,18 @@ function CreateProject(props) {
     }
 
     return (
-        <div className="bg-white backdrop-filter backdrop-blur-xl bg-opacity-60 rounded-md m-5 p-5">
-            <p className='text-2xl'>Create Project</p>
-            <div style={{display: 'flex', marginBottom: 30}}>
-                <div style={{display: 'flex', flexDirection: 'row', marginRight: '10px'}}>
-                    <label>Project Name: </label>
-                    <input type="text" placeholder="Enter Project Name" onChange={handleInputChange}/>
+        <div className="bg-white backdrop-filter backdrop-blur-xl bg-opacity-60 shadow-md rounded-md m-5 p-5">
+            <p className='text-3xl font-bold'>Create a New Project</p>
+            <div className='flex m-5'>
+                <div className='grow'>
+                    <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">Project Name</label>
+                    <input type="text" class="bg-gray-50 rounded-md py-1.5 pl-3 pr-17 mr-5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500" onChange={handleInputChange}/>
                 </div>
-                <div style={{display: 'flex', flexDirection: 'row', marginRight: '10px'}}>
-                    <label>Code: </label>
-                    <input type="password" placeholder="Enter Code" onChange={handleCodeChange}/>
+                <div className='grow'>
+                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">Project Code</label>
+                    <input type="text" class="bg-gray-50 rounded-md py-1.5 pl-3 pr-17 mr-5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500" onChange={handleCodeChange}/>
                 </div>
-                <div>
-                    <button style={{height: '100%', backgroundColor: 'white'}} onClick={CreatePressed}>Create Project</button>
-                </div>
+                <button type="button" class="justify-self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mt-6 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" onClick={createPressed}>Create Project</button>
             </div>
         </div>
     );

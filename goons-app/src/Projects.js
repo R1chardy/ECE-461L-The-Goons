@@ -36,7 +36,7 @@ function Projects() {
             newCounts.set(hws, currAvail+amt)
             setCounts(newCounts)
         }
-        else{
+        else {
             const amt = Math.min(currAvail, num)
             const newChecked = new Map(hwsChecked)
             newChecked.set([proj,hws].toString(), currChecked+amt)
@@ -49,24 +49,26 @@ function Projects() {
         //Talk with backend
     }
 
-    const onCreatePress = (name, code) =>{
+    const onCreatePress = (name, code) => {
         //Check with backend
         const newProject = {id: name, pass: code}
         setProjects([...projects, newProject])
     }
 
     return (
-        <div class="bg-tailwind place-content-center flex">
+        <div class="bg-tailwind bg-no-repeat place-content-center flex">
             <div className='max-w-7xl flex'>
                 <div className='grow w-[800px]'>
-                    <p className='text-4xl'>Manage Your Projects</p>
+                    <p className='text-6xl font-bold'>Manage Your Projects</p>
                     <CreateProject onCreatePress={onCreatePress}></CreateProject>
                     <div>
-                    {projects.map((project) => (<SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>))}
+                        {projects.map((project) => (
+                            <SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>
+                        ))}
                     </div>
                 </div>
                 <div className='w-80'>
-                    <p className='text-4xl'>Hardware Sets</p>
+                    <p className='text-6xl font-bold'>Hardware Sets</p>
                     <div>
                         <label>Remaining Hardware Set 1: {hwsCounts.has(1)? hwsCounts.get(1) : capacity}/{capacity}</label>
                     </div>

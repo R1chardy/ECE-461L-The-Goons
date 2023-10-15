@@ -22,8 +22,24 @@ function SingleProject(props) {
     }
 
     return (
-        <div className="bg-white backdrop-filter backdrop-blur-md bg-opacity-60 rounded-md m-5 p-5">
-            <p className='text-2xl'>Project {props.id}</p>
+        <div className="bg-white backdrop-filter backdrop-blur-md bg-opacity-60 shadow-md rounded-md m-5 p-5">
+            <p className='text-3xl font-bold'>Project {props.id}</p>
+
+            <div class="p-5 grid grid-cols-2 row-gap-8 md:grid-cols-4">
+                <div class="text-center md:border-r">
+                <p class="text-xs tracking-widest text-gray-800 uppercase">
+                    HW Set 1 Items
+                </p>
+                <h6 class="text-5xl font-bold">0</h6>
+                </div>
+                <div class="text-center">
+                <p class="text-xs tracking-widest text-gray-800 uppercase">
+                    HW Set 2 Items
+                </p>
+                <h6 class="text-5xl font-bold">0</h6>
+                </div>
+            </div>
+
             <div style={{display: 'flex', marginBottom: 30}}>
                 <HWSet hwname={1} projname={id} joined={joined} hwsChecked={props.hwsChecked} CheckPressed={CheckPressed}></HWSet>
                 <HWSet hwname={2} projname={id} joined={joined} hwsChecked={props.hwsChecked} CheckPressed={CheckPressed}></HWSet>

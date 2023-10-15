@@ -9,12 +9,16 @@ import Projects from './Projects'
 
 export default function Home() {
   return (
-    <BrowserRouter>
-      <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/projects" element={<Projects />} />
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <link rel="preconnect" href="https://rsms.me/"/>
+      <link rel="stylesheet" href="https://rsms.me/inter/inter.css"/>
+      <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/projects" element={<Projects />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
