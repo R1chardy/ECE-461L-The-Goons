@@ -5,23 +5,23 @@ function HWSet(props) {
     const hwname = props.hwname
     const projname = props.projname
     const joined = props.joined
-    const hwsCounts = props.hwsCounts
+    const hwsChecked = props.hwsChecked
 
     const [inputValue, setInputValue] = useState(0)
 
     const checkInValue = (num) => {
         if(!isNaN(num) && (joined.has(projname))) {
-            // const val = Math.min(value+num, max)
+            const val = Math.max(0, (hwsChecked.has([projname,hwname].toString())? hwsChecked.get([projname,hwname].toString()) : 0) - num)
             //send update to backend
-            props.CheckPressed(hwname, 0)
+            props.CheckPressed(projname, hwname, val)
         }
     }
 
     const checkOutValue = (num) => {
         if(!isNaN(num) && (joined.has(projname))){
-            // const val = Math.max(value-num, 0)
+            const val = Math.min(50, num + (hwsChecked.has([projname,hwname].toString())? hwsChecked.get([projname,hwname].toString()) : 0))
             //send update to backend
-            props.CheckPressed(hwname, 0)
+            props.CheckPressed(projname, hwname, val)
         }
     }
 
@@ -32,7 +32,7 @@ function HWSet(props) {
     return (
         <div>
             <div style={{ display: 'flex', flexDirection: 'column'}}>
-                <p style={{margin: '0', marginRight: '10px'}}>HW Set {hwname}: {0}/{50}</p>
+                <p style={{margin: '0', marginRight: '10px'}}>HW Set {hwname} checked out: {hwsChecked.has([projname,hwname].toString())? hwsChecked.get([projname,hwname].toString()) : 0}</p>
             </div>
             <div style={{display: 'flex', flexDirection: 'column', marginRight: '10px'}}>
                 <input type="text" placeholder="Enter Amount" onChange={handleInputChange}/>

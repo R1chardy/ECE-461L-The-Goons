@@ -3,10 +3,10 @@ import SingleProject from './SingleProject';
 import CreateProject from './CreateProject'
 
 function Projects() {
-    const max = 50
+    const capacity = 50
     const[joined, setJoined] = useState(new Set())
-    const [hwsCounts, setCounts] = useState(new Map())
-
+    const [hwsCounts, setCounts] = useState(new Map())  //Available
+    const [hwsChecked, setChecked] = useState(new Map())  //Amount checked out by each group
     const [projects, setProjects] = useState([]);
 
     const updateJoinPress = (num, code) => {
@@ -22,10 +22,13 @@ function Projects() {
         }
     }
 
-    const updateHWSets = (hws, num) => {
-        const newCounts = new Map(hwsCounts);
-        newCounts.set(hws, num);
-        setCounts(newCounts)
+    const updateHWSets = (proj, hws, num) => {
+        // const newCounts = new Map(hwsCounts);
+        // newCounts.set(hws, num);
+        // setCounts(newCounts)
+        const newChecked = new Map(hwsChecked)
+        newChecked.set([proj,hws].toString(), num)
+        setChecked(newChecked)
     }
 
     const onCreatePress = (name, code) =>{
@@ -41,7 +44,7 @@ function Projects() {
                     <p className='text-4xl'>Manage Your Projects</p>
                     <CreateProject onCreatePress={onCreatePress}></CreateProject>
                     <div>
-                    {projects.map((project) => (<SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} hwCounts={hwsCounts} onHWUpdate={updateHWSets}></SingleProject>))}
+                    {projects.map((project) => (<SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>))}
                     </div>
                 </div>
                 <div className='w-80'>
