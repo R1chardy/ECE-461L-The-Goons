@@ -11,8 +11,8 @@ export default function Home() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<LoginPage />} />
-        <Route path="/Projects" element={<Projects />} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/projects" element={<Projects />} />
       </Routes>
     </BrowserRouter>
   );

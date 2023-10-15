@@ -25,6 +25,9 @@ function LoginPage() {
         .then(data => {
             console.log(data)
             setOutputMessage(data.message)
+            if (data.message === "Login successful") {
+                window.location.href = '/projects'
+            }
         })
         .catch(error => {
             console.log(error)
@@ -95,7 +98,6 @@ function LoginPage() {
                     {outputMessage}
                 </label>
             </div>
-            <a href="/Projects">Project Page</a>
         </div>
     )
 }
