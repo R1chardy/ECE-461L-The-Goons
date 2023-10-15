@@ -6,22 +6,23 @@ function HWSet(props) {
     const projname = props.projname
     const joined = props.joined
     const hwsChecked = props.hwsChecked
+    const hwsCounts= props.hwsCounts
 
     const [inputValue, setInputValue] = useState(0)
 
     const checkInValue = (num) => {
         if(!isNaN(num) && (joined.has(projname))) {
-            const val = Math.max(0, (hwsChecked.has([projname,hwname].toString())? hwsChecked.get([projname,hwname].toString()) : 0) - num)
+            // const val = Math.max(0, (hwsChecked.has([projname,hwname].toString())? hwsChecked.get([projname,hwname].toString()) : 0)-num)
             //send update to backend
-            props.CheckPressed(projname, hwname, val)
+            props.CheckPressed(projname, hwname, num, 1)    //1 for check in
         }
     }
 
     const checkOutValue = (num) => {
         if(!isNaN(num) && (joined.has(projname))){
-            const val = Math.min(50, num + (hwsChecked.has([projname,hwname].toString())? hwsChecked.get([projname,hwname].toString()) : 0))
+            // const val = num + Math.min(hwsCounts.has(hwname)? hwsCounts.get(hwname) : 50, (hwsChecked.has([projname,hwname].toString())? hwsChecked.get([projname,hwname].toString()) : 0))
             //send update to backend
-            props.CheckPressed(projname, hwname, val)
+            props.CheckPressed(projname, hwname, num, -1)   //-1 for check out
         }
     }
 

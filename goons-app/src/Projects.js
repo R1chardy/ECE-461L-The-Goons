@@ -22,13 +22,31 @@ function Projects() {
         }
     }
 
-    const updateHWSets = (proj, hws, num) => {
-        // const newCounts = new Map(hwsCounts);
-        // newCounts.set(hws, num);
-        // setCounts(newCounts)
-        const newChecked = new Map(hwsChecked)
-        newChecked.set([proj,hws].toString(), num)
-        setChecked(newChecked)
+    const updateHWSets = (proj, hws, num, flag) => {
+        const currChecked = hwsChecked.has([proj,hws].toString())? hwsChecked.get([proj,hws].toString()) : 0
+        const currAvail = hwsCounts.has(hws)? hwsCounts.get(hws) : 50
+        if(flag === 1){
+            const amt = Math.min(currChecked, num)
+            //set the hwsCounts and hwsChecked
+            const newChecked = new Map(hwsChecked)
+            newChecked.set([proj,hws].toString(), currChecked-amt)
+            setChecked(newChecked)
+            
+            const newCounts = new Map(hwsCounts)
+            newCounts.set(hws, currAvail+amt)
+            setCounts(newCounts)
+        }
+        else{
+            const amt = Math.min(currAvail, num)
+            const newChecked = new Map(hwsChecked)
+            newChecked.set([proj,hws].toString(), currChecked+amt)
+            setChecked(newChecked)
+            
+            const newCounts = new Map(hwsCounts)
+            newCounts.set(hws, currAvail-amt)
+            setCounts(newCounts)
+        }
+        //Talk with backend
     }
 
     const onCreatePress = (name, code) =>{
@@ -44,11 +62,17 @@ function Projects() {
                     <p className='text-4xl'>Manage Your Projects</p>
                     <CreateProject onCreatePress={onCreatePress}></CreateProject>
                     <div>
-                    {projects.map((project) => (<SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>))}
+                    {projects.map((project) => (<SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} hwsCounts={hwsCounts} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>))}
                     </div>
                 </div>
                 <div className='w-80'>
                     <p className='text-4xl'>Hardware Sets</p>
+                    <div>
+                        <label>Remaining Hardware Set 1: {hwsCounts.has(1)? hwsCounts.get(1) : capacity}/{capacity}</label>
+                    </div>
+                    <div>
+                        <label>Remaining Hardware Set 2: {hwsCounts.has(2)? hwsCounts.get(2) : capacity}/{capacity}</label>
+                    </div>
                 </div>
             </div>
             {/* <div>
