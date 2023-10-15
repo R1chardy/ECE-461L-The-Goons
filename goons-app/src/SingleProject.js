@@ -22,7 +22,7 @@ function SingleProject(props) {
     }
 
     return (
-        <div className="bg-white backdrop-filter backdrop-blur-xl bg-opacity-60 rounded-md m-5 p-5">
+        <div className="bg-white backdrop-filter backdrop-blur-md bg-opacity-60 rounded-md m-5 p-5">
             <p className='text-2xl'>Project {props.id}</p>
             <div style={{display: 'flex', marginBottom: 30}}>
                 <HWSet hwname={1} projname={id} joined={joined} hwsChecked={props.hwsChecked} CheckPressed={CheckPressed}></HWSet>
