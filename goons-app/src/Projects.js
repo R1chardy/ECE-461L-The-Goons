@@ -62,7 +62,7 @@ function Projects() {
                     <p className='text-4xl'>Manage Your Projects</p>
                     <CreateProject onCreatePress={onCreatePress}></CreateProject>
                     <div>
-                    {projects.map((project) => (<SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} hwsCounts={hwsCounts} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>))}
+                    {projects.map((project) => (<SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>))}
                     </div>
                 </div>
                 <div className='w-80'>
@@ -75,12 +75,6 @@ function Projects() {
                     </div>
                 </div>
             </div>
-            {/* <div>
-                <p className='text-4xl'>Manage Your Projects</p>
-                <SingleProject id={1} onDataUpdate={updateJoinPress} joined={joined} prop4={hwsCounts} prop5={max} onHWUpdate={updateHWSets}></SingleProject>
-                <SingleProject id={2} onDataUpdate={updateJoinPress} joined={joined} prop4={hwsCounts} prop5={max} onHWUpdate={updateHWSets}></SingleProject>
-                <SingleProject id={3} onDataUpdate={updateJoinPress} joined={joined} prop4={hwsCounts} prop5={max} onHWUpdate={updateHWSets}></SingleProject>
-            </div> */}
         </div>
     );
 }
