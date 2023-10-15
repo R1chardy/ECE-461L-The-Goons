@@ -27,9 +27,9 @@ function HWSet(props) {
 
     return (
         <div>
-            <div style={{ display: 'flex', flexDirection: 'column'}}>
+            {/* <div style={{ display: 'flex', flexDirection: 'column'}}>
                 <p style={{margin: '0', marginRight: '10px'}}>HW Set {hwname} checked out: {hwsChecked.has([projname,hwname].toString()) ? hwsChecked.get([projname,hwname].toString()) : 0}</p>
-            </div>
+            </div> */}
             <div style={{display: 'flex', flexDirection: 'column', marginRight: '10px'}}>
                 <input type="text" placeholder="Enter Amount" onChange={handleInputChange}/>
             </div>

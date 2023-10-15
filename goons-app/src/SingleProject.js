@@ -5,6 +5,7 @@ function SingleProject(props) {
 
     const id = props.id
     const joined = props.joined
+    const hwsChecked = props.hwsChecked
     
 
     const [code, setCode] = useState("")
@@ -30,13 +31,13 @@ function SingleProject(props) {
                 <p class="text-xs tracking-widest text-gray-800 uppercase">
                     HW Set 1 Items
                 </p>
-                <h6 class="text-5xl font-bold">0</h6>
+                <h6 class="text-5xl font-bold">{hwsChecked.has([id,1].toString()) ? hwsChecked.get([id,1].toString()) : 0}</h6>
                 </div>
                 <div class="text-center">
                 <p class="text-xs tracking-widest text-gray-800 uppercase">
                     HW Set 2 Items
                 </p>
-                <h6 class="text-5xl font-bold">0</h6>
+                <h6 class="text-5xl font-bold">{hwsChecked.has([id,2].toString()) ? hwsChecked.get([id,2].toString()) : 0}</h6>
                 </div>
             </div>
 
