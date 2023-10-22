@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
+from bson import json_util
+import json
 from config import uri
 
 app = Flask(__name__)
@@ -8,6 +10,7 @@ client = MongoClient(uri)
 db = client["Application"] # main application database
 users = db["Users"] # user collection
 projects = db["Projects"] # projects collection
+hardwareSets = db["HWSets"] # hardware sets collection
 
 CORS(app, resources={r'/*': {'origins': '*'}})
 
@@ -18,7 +21,6 @@ def api_test():
 @app.route('/add_account', methods=['POST'])
 def add_account():
     data = request.get_json() # request should be a json with username/password
-    # res = users.insert_one(data) # this inserts it into mongoDB. consider encrypting the password tho
 
     if data["username"] == "" or data["password"] == "":
         return jsonify({'message': 'invalid input'}), 400
@@ -52,20 +54,21 @@ def login():
             return jsonify({'message': 'Invalid username or password'}), 401
     return jsonify({'message': 'Invalid username or password'}), 401
 
-@app.route('/get_project', methods=['GET'])
+@app.route('/update_projectpage', methods=['GET'])
 def get_project():
-    data = request.get_json() 
-
-    username = data.get('username')
+    username = request.args.get('username')
     projectList = list(projects.find())
-    user_projectList = list(projects.find({"username": username}))
+    user_projectList = list(projects.find({"Users": username}))
+    hardwareSetsList = list(hardwareSets.find())
+    print(user_projectList)
 
     response_data = {
         "projects": projectList,
-        "user_projects": user_projectList
+        "user_projects": user_projectList,
+        "hardwareSets": hardwareSetsList
     }
 
-    return jsonify(response_data), 200
+    return json.loads(json_util.dumps(response_data))
 
 # need to make /add_project route
 
