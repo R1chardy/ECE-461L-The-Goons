@@ -70,8 +70,30 @@ def get_project():
 
     return json.loads(json_util.dumps(response_data))
 
-# need to make /add_project route
+'''
+need to make /join_project route (I believe a POST request)
+this api will get the projectID from the frontend, and check if the projectID exists in the projects collection,
+ if so, add the user to the project
+'''
+# ------------------------------------------------------------------------- 
+'''
+need to make /create_project route (I believe a POST request)
+this api will get the projectID and project Name from the frontend, check if the projectID exists in the projects collection,
+if so, return an error message, if not, add the project to the projects collection
+'''
+# ------------------------------------------------------------------------- 
+'''
+need to make /check_in_hardware route (I believe a POST request)
+this api will first get what HWSet it is (either hwset1 or hwset2 lol),
+and then update the avaiablilty of that hardware set in the hardwareSets collection respectively
+'''
+# ------------------------------------------------------------------------- 
+'''
+need to make /check_out_hardware route (I believe a POST request)
+this api will first get what HWSet it is, and then update the avaiablilty of that hardware set in the hardwareSets collection respectively
+ALSO this will update the project that the hardware is being checked out to (specifically the quantiy of the hardware in the project)
+'''
+# ------------------------------------------------------------------------- 
 
-# need to make /get_project route
 if __name__ == '__main__':
     app.run(debug=True)
