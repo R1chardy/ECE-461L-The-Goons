@@ -1,14 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SingleProject from './SingleProject';
 import CreateProject from './CreateProject'
 
 function Projects() {
     const capacity = 50
-    const[joined, setJoined] = useState(new Set())
+    const [joined, setJoined] = useState(new Set())
     const [hwsCounts, setCounts] = useState(new Map())  //Available
     const [hwsChecked, setChecked] = useState(new Map())  //Amount checked out by each group
     const [projects, setProjects] = useState([]);
+    
+    const firstTime = useRef(true);
 
+    useEffect(() => {
+        if(firstTime.current){
+            firstTime.current = false
+            //Initialize the page
+            fetch('http://127.0.0.1:5000/update_projectpage?username=${encodeURIComponent(deshplop)}')
+            .then(response => {return response.json()})
+            .then(data => {
+                console.log(data)
+            })
+            .catch(error => {
+                console.log(error)
+            });
+        }
+    });
+    
     const updateJoinPress = (num, code) => {
         if (joined.has(num)) {
             const newJoined = new Set(joined)

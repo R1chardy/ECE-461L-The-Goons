@@ -79,7 +79,7 @@ function LoginPage() {
                     </label>
                 </form>
             </div>
-            <div ClassName="Password">
+            <div className="Password">
                 <form>
                     <label  style={{marginLeft: rightShift+5+"px"}}>
                     Password:
