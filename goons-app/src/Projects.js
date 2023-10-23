@@ -11,11 +11,14 @@ function Projects() {
     
     const firstTime = useRef(true);
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const user = urlParams.get('user');
+
     useEffect(() => {
         if(firstTime.current){
             firstTime.current = false
             //Initialize the page
-            fetch('http://127.0.0.1:5000/update_projectpage?username=${encodeURIComponent(deshplop)}')
+            fetch('http://127.0.0.1:5000/update_projectpage?username=${encodeURIComponent(' + user + ')}')
             .then(response => {return response.json()})
             .then(data => {
                 console.log(data)
