@@ -72,28 +72,28 @@ def get_project():
 
 '''
 need to make /join_project route (I believe a POST request)
-this api will get the projectID and username from the frontend, and check if the projectID exists in the projects collection,
+this api will get the projectid and username from the frontend, and check if the projectid exists in the projects collection,
  if so, add the user to the project
 '''
 @app.route('/join_project', methods=['POST'])
 def join_project():
     data = request.get_json() # get project ID from the frontend
-    if data['projectID'] == '':
+    if data['projectid'] == '':
         return jsonify({'message': 'invalid input'}), 400
     
-    projID = data.get('projectID')
+    projID = data.get('projectid')
     # check that project exists
-    projectList = list(projects.find({'projectID': projID}))
+    projectList = list(projects.find({'projectid': projID}))
     if len(projectList) == 0:
         return jsonify({'message': 'Project does not exist'})
     # add user to this project
-    username = data.get('projectID')
-    projects.update_one({'projectID': projID},{'$push': {'users': username}})
+    username = data.get('username')
+    projects.update_one({'projectid': projID},{'$push': {'users': username}})
 
 # ------------------------------------------------------------------------- 
 '''
 need to make /create_project route (I believe a POST request)
-this api will get the projectID and project Name from the frontend, check if the projectID exists in the projects collection,
+this api will get the projectid and project Name from the frontend, check if the projectid exists in the projects collection,
 if so, return an error message, if not, add the project to the projects collection
 '''
 # ------------------------------------------------------------------------- 
