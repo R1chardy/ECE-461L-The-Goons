@@ -33,7 +33,7 @@ def add_account():
         return jsonify({'message': 'Username already exists'}), 400
     else:
         users.insert_one({"username": username, "password": password}) # inserts new acc in db    
-        return jsonify({"message": "Account added successfully."}), 201
+        return jsonify({"message": "Account added successfully."}), 200
     
 @app.route('/login', methods=['POST'])
 def login():
@@ -51,8 +51,8 @@ def login():
         if user["password"] == password:
             return jsonify({'message': 'Login successful'}), 200
         else:
-            return jsonify({'message': 'Invalid username or password'}), 401
-    return jsonify({'message': 'Invalid username or password'}), 401
+            return jsonify({'message': 'Invalid username or password'}), 400
+    return jsonify({'message': 'Invalid username or password'}), 400
 
 @app.route('/update_projectpage', methods=['GET'])
 def get_project():
@@ -68,11 +68,11 @@ def get_project():
         "hardwareSets": hardwareSetsList
     }
 
-    return json.loads(json_util.dumps(response_data))
+    return json.loads(json_util.dumps(response_data)), 200
 
 '''
-need to make /join_project route (I believe a POST request)
-this api will get the projectid and username from the frontend, and check if the projectid exists in the projects collection,
+ /join_project route
+ this api will get the projectid and username from the frontend, and check if the projectid exists in the projects collection,
  if so, add the user to the project
 '''
 @app.route('/join_project', methods=['POST'])
@@ -85,15 +85,15 @@ def join_project():
     # check that project exists
     projectList = list(projects.find({'projectid': projID}))
     if len(projectList) == 0:
-        return jsonify({'message': 'Project does not exist'})
+        return jsonify({'message': 'Project does not exist'}), 400
     # add user to this project
     username = data.get('username')
     projects.update_one({'projectid': projID},{'$push': {'users': username}})
-    return jsonify({'message': 'Successfully added user '+username+' to project with ID '+projID})
+    return jsonify({'message': 'Successfully added user '+username+' to project with ID '+projID}), 200
 
 # ------------------------------------------------------------------------- 
 '''
-need to make /create_project route (I believe a POST request)
+/create_project route 
 this api will get the projectid, name, and description from the frontend, check if the projectid exists in the projects collection,
 if so, return an error message, if not, add the project to the projects collection
 '''
@@ -106,25 +106,88 @@ def create_project():
     projID = data.get('projectid')
     projectList = list(projects.find({'projectid': projID}))
     if len(projectList) > 0:
-        return jsonify({'message': 'Project with id '+projID+' already exists'})
+        return jsonify({'message': 'Project with id '+projID+' already exists'}), 400
     
     name = data.get('name')
     description = data.get('description')
     projects.insert_one({'name': name, 'description': description, 'projectid': projID, 'users': [], 'hwsets': []})
-    return jsonify({'message': 'Successfully added new project with ID '+projID})
+    return jsonify({'message': 'Successfully added new project with ID '+projID}), 200
 
 # ------------------------------------------------------------------------- 
 '''
-need to make /check_in_hardware route (I believe a POST request)
+need to make /check_in_hw route (I believe a POST request)
 this api will first get what HWSet it is (either hwset1 or hwset2 lol),
 and then update the avaiablilty of that hardware set in the hardwareSets collection respectively
+ALSO this will update the project that the hardware is being checked in from (specifically the quantiy of the hardware in the project)
+needs: projectid (str), hardware set (int 1 or 2), quantity (number/int)
 '''
+@app.route('/check_in_hw', methods=['POST'])
+def check_in():
+    data = request.get_json()
+    valid_hwset = [1,2]
+    if data['projectid'] == '' or data['quantity'] == '' or data['hwset'] not in valid_hwset:
+        return jsonify({'message': 'invalid input'}), 400
+    
+    projID = data.get('projectid')
+    # check that project exists
+    projectList = list(projects.find({'projectid': projID}))
+    if len(projectList) == 0:
+        return jsonify({'message': 'Project does not exist'}), 400
+    
+    hwset = data.get('hwset')
+    quantity = data.get('quantity')
+    # if project attempts to return more than project has checked out, return error
+    if quantity > projectList[0]['hwsets']['hwset'+str(hwset)]:
+        return jsonify({'message': 'Cannot check in more than you have checked out'}), 401
+    # now to update hwset collection
+    hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': quantity}})
+    
+    #now update the project collection
+    projects.update_one({'projectid': projID}, {'$inc': {
+        'hwsets.hwset'+str(hwset): -1*quantity
+    }})
+    
+    return jsonify({'message': 'Successfully checked in '+str(quantity)+' units to HWSet'+str(hwset)+' from project with id '+projID}), 200
 # ------------------------------------------------------------------------- 
 '''
-need to make /check_out_hardware route (I believe a POST request)
+need to make /check_out_hw route (I believe a POST request)
 this api will first get what HWSet it is, and then update the avaiablilty of that hardware set in the hardwareSets collection respectively
 ALSO this will update the project that the hardware is being checked out to (specifically the quantiy of the hardware in the project)
 '''
+@app.route('/check_out_hw', methods=['POST'])
+def check_out():
+    data = request.get_json()
+    valid_hwset = [1,2]
+    if data['projectid'] == '' or data['quantity'] == '' or data['hwset'] not in valid_hwset:
+        return jsonify({'message': 'invalid input'}), 400
+    
+    projID = data.get('projectid')
+    # check that project exists
+    projectList = list(projects.find({'projectid': projID}))
+    if len(projectList) == 0:
+        return jsonify({'message': 'Project does not exist'}), 400
+    
+    hwset = data.get('hwset')
+    quantity = data.get('quantity')
+    # check if we have enough capacity
+    ran_out = False
+    hwdoc = hardwareSets.find_one({'name': 'HWSet'+str(hwset)})
+    # if amount requested is greater than availability
+    if (hwdoc['availability']) < quantity:
+        quantity = hwdoc['availability']
+        # set flag for return
+        ran_out = True
+    # now to update hwset collection
+    hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': -1*quantity}})
+    
+    #now update the project collection
+    projects.update_one({'projectid': projID}, {'$inc': {
+        'hwsets.hwset'+str(hwset): quantity
+    }})
+    if ran_out:
+        return jsonify({'message': 'Checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset)+' because ran out'}), 201
+    return jsonify({'message': 'Successfully checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset)}),200
+
 # ------------------------------------------------------------------------- 
 
 if __name__ == '__main__':
