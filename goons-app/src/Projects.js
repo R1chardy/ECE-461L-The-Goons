@@ -21,7 +21,7 @@ function Projects() {
             fetch('http://127.0.0.1:5000/update_projectpage?username=${encodeURIComponent(' + user + ')}')
             .then(response => {return response.json()})
             .then(data => {
-                console.log(data)
+                pageSetup(data)
             })
             .catch(error => {
                 console.log(error)
@@ -29,7 +29,15 @@ function Projects() {
         }
     });
     
-    const updateJoinPress = (num, code) => {
+    const pageSetup = (j) =>{
+        for (const proj of j.projects) {
+            const newProject = { id: proj.name, pass: 0 };  //FIX password is currently hardcoded to 0
+            setProjects(projects => [...projects, newProject]);
+        }
+        //Add more page setups
+    }
+
+    const updateJoinPress = (num, code) => {    //confirm code is correct
         if (joined.has(num)) {
             const newJoined = new Set(joined)
             newJoined.delete(num)
