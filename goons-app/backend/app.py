@@ -77,8 +77,8 @@ this api will get the projectid and username from the frontend, and check if the
 '''
 @app.route('/join_project', methods=['POST'])
 def join_project():
-    data = request.get_json() # get project ID from the frontend
-    if data['projectid'] == '':
+    data = request.get_json() # get json form frontend
+    if data['projectid'] == '' or data['username'] == '':
         return jsonify({'message': 'invalid input'}), 400
     
     projID = data.get('projectid')
@@ -89,6 +89,7 @@ def join_project():
     # add user to this project
     username = data.get('username')
     projects.update_one({'projectid': projID},{'$push': {'users': username}})
+    return jsonify({'message': 'Successfully added user '+username+' to project with ID '+projID})
 
 # ------------------------------------------------------------------------- 
 '''
