@@ -190,5 +190,28 @@ def check_out():
 
 # ------------------------------------------------------------------------- 
 
+# hardware information route
+@app.route('/get_hardware_sets', methods=['GET'])
+def get_hardware_sets():
+    data = request.get_json()
+    
+    cursor = hardwareSets.find()
+    hardwareSetsList = []
+    hardwareSet = {}
+    for document in cursor:
+        tempSet = {"name" : document["Name"] , "capacity" : document["Capacity"], "availability" : document["Availability"] , "checkedOut" : document["CheckedOut"]}
+        hardwareSetsList.append(tempSet)
+        if (data.get('name') == document["Name"]):
+            hardwareSet = tempSet
+            print(hardwareSetsList)
+            print(hardwareSet)
+
+    response_data = {
+    "hardwareSets": hardwareSetsList,
+    "hardwareSet": hardwareSet,
+    }
+
+    return jsonify(response_data), 200
+
 if __name__ == '__main__':
     app.run(debug=True)
