@@ -94,9 +94,25 @@ def join_project():
 # ------------------------------------------------------------------------- 
 '''
 need to make /create_project route (I believe a POST request)
-this api will get the projectid and project Name from the frontend, check if the projectid exists in the projects collection,
+this api will get the projectid, name, and description from the frontend, check if the projectid exists in the projects collection,
 if so, return an error message, if not, add the project to the projects collection
 '''
+@app.route('/create_project', methods=['POST'])
+def create_project():
+    data = request.get_json()
+    if data['projectid'] == '' or data['name'] == '' or data['description'] == '':
+        return jsonify({'message': 'invalid input'}), 400
+    
+    projID = data.get('projectid')
+    projectList = list(projects.find({'projectid': projID}))
+    if len(projectList) > 0:
+        return jsonify({'message': 'Project with id '+projID+' already exists'})
+    
+    name = data.get('name')
+    description = data.get('description')
+    projects.insert_one({'name': name, 'description': description, 'projectid': projID, 'users': [], 'hwsets': []})
+    return jsonify({'message': 'Successfully added new project with ID '+projID})
+
 # ------------------------------------------------------------------------- 
 '''
 need to make /check_in_hardware route (I believe a POST request)
