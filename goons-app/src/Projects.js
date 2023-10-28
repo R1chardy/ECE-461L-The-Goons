@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SingleProject from './SingleProject';
 import CreateProject from './CreateProject'
+import JoinProject from './JoinProject'
 
 function Projects() {
-    const capacity = 50
-    const [joined, setJoined] = useState(new Set())
+    const capacity = 100
     const [hwsCounts, setCounts] = useState(new Map())  //Available
     const [hwsChecked, setChecked] = useState(new Map())  //Amount checked out by each group
     const [projects, setProjects] = useState([]);
@@ -14,7 +14,7 @@ function Projects() {
     const urlParams = new URLSearchParams(window.location.search);
     const user = urlParams.get('user');
 
-    useEffect(() => {
+    useEffect(() => {   //BACKEND
         if(firstTime.current){
             firstTime.current = false
             //Initialize the page
@@ -29,31 +29,24 @@ function Projects() {
         }
     });
     
-    const pageSetup = (j) =>{
-        for (const proj of j.projects) {
-            const newProject = { id: proj.name, pass: 0 };  //FIX password is currently hardcoded to 0
+    const pageSetup = (jsonFile) =>{
+        for (const proj of jsonFile.projects) {
+            const newProject = { id: proj.name};
             setProjects(projects => [...projects, newProject]);
         }
-        //Add more page setups
+        //Set up capacity, hwsCounts, and hwsChecked
     }
 
-    const reloadPage = () =>{
-        //get data from backend
-        //update entire page
+    const onJoinPress = (code) =>{  //BACKEND
+        //Talk to backend to and get project from code
+        console.log(code)
     }
 
-    const updateJoinPress = (num, code) => {    //confirm code is correct
-
-        if (joined.has(num)) {
-            const newJoined = new Set(joined)
-            newJoined.delete(num)
-            setJoined(newJoined)
-        } else {
-            //Talk with backend to see if (num,code) is valid
-            const newJoined = new Set(joined)
-            newJoined.add(num)
-            setJoined(newJoined)
-        }
+    const updateLeavePress = (name) => { //BACKEND
+        console.log(name)
+        //Talk to backend to remove name from project
+        const newProjects = projects.filter(project => project.id !== name);
+        setProjects(newProjects)
     }
 
     const updateHWSets = (proj, hws, num, flag) => {
@@ -66,7 +59,6 @@ function Projects() {
         });
         if(flag === 1){ //Checking in
             //Talk with backend to get amount checked in
-            //if backend successful:
             
             fetch('http://127.0.0.1:5000/check_in_hw', {
             method: 'POST',
@@ -98,7 +90,7 @@ function Projects() {
         }
         else {  //Checking out
             //Talk with backend to get amount checked out
-            //if backend successful:
+
             fetch('http://127.0.0.1:5000/check_out_hw', {
             method: 'POST',
             headers: {
@@ -125,15 +117,13 @@ function Projects() {
                 console.log(error)
             });
         }
-        // reloadPage()
     }
 
-    const onCreatePress = (name, code) => {
-        //Check with backend
-        const newProject = {id: name, pass: code}
+    const onCreatePress = (name, code) => { //BACKEND
+        //Check with backend that takes in  (name,code)
+        const newProject = {id: name}
         //talk with backend before adding to projects
         setProjects([...projects, newProject])
-        // reloadPage()
     }
 
     return (
@@ -142,9 +132,10 @@ function Projects() {
                 <div className='grow w-[800px]'>
                     <p className='text-6xl font-bold'>Manage Your Projects</p>
                     <CreateProject onCreatePress={onCreatePress}></CreateProject>
+                    <JoinProject onJoinPress={onJoinPress}></JoinProject>
                     <div>
                         {projects.map((project) => (
-                            <SingleProject id={project.id} onDataUpdate={updateJoinPress} joined={joined} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>
+                            <SingleProject id={project.id} onDataUpdate={updateLeavePress} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>
                         ))}
                     </div>
                 </div>
