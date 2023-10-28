@@ -126,28 +126,32 @@ def check_in():
     data = request.get_json()
     valid_hwset = [1,2]
     if data['projectid'] == '' or data['quantity'] == '' or data['hwset'] not in valid_hwset:
-        return jsonify({'message': 'invalid input'}), 400
+        return jsonify({'message': 'invalid input',
+                        'quant': 0}), 400
     
     projID = data.get('projectid')
     # check that project exists
-    projectList = list(projects.find({'projectid': projID}))
+    projectList = list(projects.find({'name': projID}))
     if len(projectList) == 0:
-        return jsonify({'message': 'Project does not exist'}), 400
+        return jsonify({'message': 'Project does not exist',
+                        'quant': 0}), 400
     
     hwset = data.get('hwset')
     quantity = data.get('quantity')
     # if project attempts to return more than project has checked out, return error
-    if quantity > projectList[0]['hwsets']['hwset'+str(hwset)]:
-        return jsonify({'message': 'Cannot check in more than you have checked out'}), 401
+    if int(quantity) > int(projectList[0]['hwsets']['hwset'+str(hwset)]):
+        return jsonify({'message': 'Cannot check in more than you have checked out',
+                        'quant': 0}), 401
     # now to update hwset collection
     hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': quantity}})
     
     #now update the project collection
-    projects.update_one({'projectid': projID}, {'$inc': {
+    projects.update_one({'name': projID}, {'$inc': {
         'hwsets.hwset'+str(hwset): -1*quantity
     }})
     
-    return jsonify({'message': 'Successfully checked in '+str(quantity)+' units to HWSet'+str(hwset)+' from project with id '+projID}), 200
+    return jsonify({'message': 'Successfully checked in '+str(quantity)+' units to HWSet'+str(hwset)+' from project with id '+projID,
+                    'quant': quantity}), 200
 # ------------------------------------------------------------------------- 
 '''
 need to make /check_out_hw route (I believe a POST request)
@@ -159,13 +163,15 @@ def check_out():
     data = request.get_json()
     valid_hwset = [1,2]
     if data['projectid'] == '' or data['quantity'] == '' or data['hwset'] not in valid_hwset:
-        return jsonify({'message': 'invalid input'}), 400
+        return jsonify({'message': 'invalid input',
+                        'quant': 0}), 400
     
     projID = data.get('projectid')
     # check that project exists
-    projectList = list(projects.find({'projectid': projID}))
+    projectList = list(projects.find({'name': projID}))
     if len(projectList) == 0:
-        return jsonify({'message': 'Project does not exist'}), 400
+        return jsonify({'message': 'Project does not exist',
+                        'quant': 0}), 400
     
     hwset = data.get('hwset')
     quantity = data.get('quantity')
@@ -181,12 +187,14 @@ def check_out():
     hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': -1*quantity}})
     
     #now update the project collection
-    projects.update_one({'projectid': projID}, {'$inc': {
+    projects.update_one({'name': projID}, {'$inc': {
         'hwsets.hwset'+str(hwset): quantity
     }})
     if ran_out:
-        return jsonify({'message': 'Checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset)+' because ran out'}), 201
-    return jsonify({'message': 'Successfully checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset)}),200
+        return jsonify({'message': 'Checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset)+' because ran out',
+                        'quant': quantity}), 201
+    return jsonify({'message': 'Successfully checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset),
+                    'quant': quantity}),200
 
 # ------------------------------------------------------------------------- 
 

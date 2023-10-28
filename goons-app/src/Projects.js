@@ -37,7 +37,13 @@ function Projects() {
         //Add more page setups
     }
 
+    const reloadPage = () =>{
+        //get data from backend
+        //update entire page
+    }
+
     const updateJoinPress = (num, code) => {    //confirm code is correct
+
         if (joined.has(num)) {
             const newJoined = new Set(joined)
             newJoined.delete(num)
@@ -53,34 +59,81 @@ function Projects() {
     const updateHWSets = (proj, hws, num, flag) => {
         const currChecked = hwsChecked.has([proj,hws].toString())? hwsChecked.get([proj,hws].toString()) : 0
         const currAvail = hwsCounts.has(hws)? hwsCounts.get(hws) : 50
-        if(flag === 1){
-            const amt = Math.min(currChecked, num)
-            //set the hwsCounts and hwsChecked
-            const newChecked = new Map(hwsChecked)
-            newChecked.set([proj,hws].toString(), currChecked-amt)
-            setChecked(newChecked)
+        const jsonString = JSON.stringify({
+            projectid: proj,
+            quantity: num,
+            hwset: hws
+        });
+        if(flag === 1){ //Checking in
+            //Talk with backend to get amount checked in
+            //if backend successful:
             
-            const newCounts = new Map(hwsCounts)
-            newCounts.set(hws, currAvail+amt)
-            setCounts(newCounts)
-        }
-        else {
-            const amt = Math.min(currAvail, num)
-            const newChecked = new Map(hwsChecked)
-            newChecked.set([proj,hws].toString(), currChecked+amt)
-            setChecked(newChecked)
+            fetch('http://127.0.0.1:5000/check_in_hw', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonString,
+            })
+            .then(response => {return response.json()})
+            .then(data => {
+                const amt = data['quant']
+
+                console.log(data['message'])
+                console.log(amt)
+
+                const newChecked = new Map(hwsChecked)
+                newChecked.set([proj,hws].toString(), currChecked-amt)
+                setChecked(newChecked)
+
+                const newCounts = new Map(hwsCounts)
+                newCounts.set(hws, currAvail+amt)
+                setCounts(newCounts)
+            })
+            .catch(error => {
+                console.log(error)
+            });
+
             
-            const newCounts = new Map(hwsCounts)
-            newCounts.set(hws, currAvail-amt)
-            setCounts(newCounts)
         }
-        //Talk with backend
+        else {  //Checking out
+            //Talk with backend to get amount checked out
+            //if backend successful:
+            fetch('http://127.0.0.1:5000/check_out_hw', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonString,
+            })
+            .then(response => {return response.json()})
+            .then(data => {
+                const amt = data['quant']
+
+                console.log(data['message'])
+                console.log(amt)
+
+                const newChecked = new Map(hwsChecked)
+                newChecked.set([proj,hws].toString(), currChecked+amt)
+                setChecked(newChecked)
+                
+                const newCounts = new Map(hwsCounts)
+                newCounts.set(hws, currAvail-amt)
+                setCounts(newCounts)
+            })
+            .catch(error => {
+                console.log(error)
+            });
+        }
+        // reloadPage()
     }
 
     const onCreatePress = (name, code) => {
         //Check with backend
         const newProject = {id: name, pass: code}
+        //talk with backend before adding to projects
         setProjects([...projects, newProject])
+        // reloadPage()
     }
 
     return (
