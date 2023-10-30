@@ -82,6 +82,11 @@ def join_project():
         return jsonify({'message': 'Project does not exist'}), 400
     # add user to this project
     username = data.get('username')
+    
+    for usernames in list(projectList[0]['users']):
+        if usernames == username:
+            return jsonify({'message': 'User already part of specified project'}), 400
+        
     projects.update_one({'projectid': projID},{'$push': {'users': username}})
     return jsonify({'message': 'Successfully added user '+username+' to project with ID '+projID,
                     'proj': projectList[0].get('name')}), 200
