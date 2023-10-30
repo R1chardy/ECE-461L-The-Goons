@@ -161,10 +161,11 @@ def check_in():
     
     hwset = data.get('hwset')
     quantity = data.get('quantity')
+    message = 'Successfully checked in '+str(quantity)+' units to HWSet'+str(hwset)+' from project with id '+projID
     # if project attempts to return more than project has checked out, return only what they have
     if int(quantity) > int(projectList[0]['hwsets']['hwset'+str(hwset)]):
-        return jsonify({'message': 'Cannot check in more than you have checked out',
-                        'quant': 0}), 401
+        quantity = int(projectList[0]['hwsets']['hwset'+str(hwset)])
+        message = 'Cannot check in more than you have checked out'
     # now to update hwset collection
     hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': quantity}})
     
@@ -173,7 +174,7 @@ def check_in():
         'hwsets.hwset'+str(hwset): -1*quantity
     }})
     
-    return jsonify({'message': 'Successfully checked in '+str(quantity)+' units to HWSet'+str(hwset)+' from project with id '+projID,
+    return jsonify({'message': message,
                     'quant': quantity}), 200
 # ------------------------------------------------------------------------- 
 '''
@@ -200,13 +201,13 @@ def check_out():
     hwset = data.get('hwset')
     quantity = data.get('quantity')
     # check if we have enough capacity
-    ran_out = False
+    message = 'Successfully checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset)
     hwdoc = hardwareSets.find_one({'name': 'HWSet'+str(hwset)})
     # if amount requested is greater than availability
     if (hwdoc['availability']) < quantity:
         quantity = hwdoc['availability']
         # set flag for return
-        ran_out = True
+        message = 'Checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset)+' because ran out'
     # now to update hwset collection
     hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': -1*quantity}})
     
@@ -214,10 +215,7 @@ def check_out():
     projects.update_one({'name': projID}, {'$inc': {
         'hwsets.hwset'+str(hwset): quantity
     }})
-    if ran_out:
-        return jsonify({'message': 'Checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset)+' because ran out',
-                        'quant': quantity}), 201
-    return jsonify({'message': 'Successfully checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset),
+    return jsonify({'message': message,
                     'quant': quantity}),200
 
 # ------------------------------------------------------------------------- 
