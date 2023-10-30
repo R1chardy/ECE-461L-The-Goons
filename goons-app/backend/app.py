@@ -89,7 +89,8 @@ def join_project():
     # add user to this project
     username = data.get('username')
     projects.update_one({'projectid': projID},{'$push': {'users': username}})
-    return jsonify({'message': 'Successfully added user '+username+' to project with ID '+projID}), 200
+    return jsonify({'message': 'Successfully added user '+username+' to project with ID '+projID,
+                    'proj': projectList[0].get('name')}), 200
 
 # ------------------------------------------------------------------------- 
 '''
@@ -154,7 +155,7 @@ def check_in():
     
     projID = data.get('projectid')
     # check that project exists
-    projectList = list(projects.find({'name': projID}))
+    projectList = list(projects.find({'projectid': projID}))
     if len(projectList) == 0:
         return jsonify({'message': 'Project does not exist',
                         'quant': 0}), 400
@@ -170,7 +171,7 @@ def check_in():
     hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': quantity}})
     
     #now update the project collection
-    projects.update_one({'name': projID}, {'$inc': {
+    projects.update_one({'projectid': projID}, {'$inc': {
         'hwsets.hwset'+str(hwset): -1*quantity
     }})
     
@@ -193,7 +194,7 @@ def check_out():
     
     projID = data.get('projectid')
     # check that project exists
-    projectList = list(projects.find({'name': projID}))
+    projectList = list(projects.find({'projectid': projID}))
     if len(projectList) == 0:
         return jsonify({'message': 'Project does not exist',
                         'quant': 0}), 400
@@ -212,7 +213,7 @@ def check_out():
     hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': -1*quantity}})
     
     #now update the project collection
-    projects.update_one({'name': projID}, {'$inc': {
+    projects.update_one({'projectid': projID}, {'$inc': {
         'hwsets.hwset'+str(hwset): quantity
     }})
     return jsonify({'message': message,

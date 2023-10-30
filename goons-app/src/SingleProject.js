@@ -5,6 +5,7 @@ function SingleProject(props) {
 
     const id = props.id
     const hwsChecked = props.hwsChecked
+    const code = props.code
     
 
     // const [code, setCode] = useState("")
@@ -14,7 +15,8 @@ function SingleProject(props) {
     }
 
     const CheckPressed = (proj, hws, num, flag) => {
-        props.onHWUpdate(proj, hws, num, flag)
+        props.onHWUpdate(proj, hws, num, code, flag)
+        console.log(code)
     }
 
     // const handleInputChange = (event) => {

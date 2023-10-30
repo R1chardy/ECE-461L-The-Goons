@@ -30,16 +30,34 @@ function Projects() {
     });
     
     const pageSetup = (jsonFile) =>{
-        for (const proj of jsonFile.projects) {
-            const newProject = { id: proj.name};
-            setProjects(projects => [...projects, newProject]);
-        }
+        // for (const proj of jsonFile.projects) {
+        //     const newProject = { id: proj.name};
+        //     setProjects(projects => [...projects, newProject]);
+        // }
         //Set up capacity, hwsCounts, and hwsChecked
     }
 
     const onJoinPress = (code) =>{  //BACKEND
         //Talk to backend to and get project from code
-        console.log(code)
+        const jsonString = JSON.stringify({
+            projectid: code,
+            username: user
+        });
+        fetch('http://127.0.0.1:5000/join_project', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonString,
+        })
+        .then(response => {return response.json()})
+        .then(data => {
+            const newProject = {id: data['proj'], code: code}
+            setProjects([...projects, newProject])
+        })
+        .catch(error => {
+            console.log(error)
+        });
     }
 
     const updateLeavePress = (name) => { //BACKEND
@@ -49,11 +67,11 @@ function Projects() {
         setProjects(newProjects)
     }
 
-    const updateHWSets = (proj, hws, num, flag) => {
+    const updateHWSets = (proj, hws, num, code, flag) => {
         const currChecked = hwsChecked.has([proj,hws].toString())? hwsChecked.get([proj,hws].toString()) : 0
-        const currAvail = hwsCounts.has(hws)? hwsCounts.get(hws) : 50
+        const currAvail = hwsCounts.has(hws)? hwsCounts.get(hws) : capacity
         const jsonString = JSON.stringify({
-            projectid: proj,
+            projectid: code,
             quantity: num,
             hwset: hws
         });
@@ -121,7 +139,7 @@ function Projects() {
 
     const onCreatePress = (name, code) => { //BACKEND
         //Check with backend that takes in  (name,code)
-        const newProject = {id: name}
+        const newProject = {id: name, code: code}
         //talk with backend before adding to projects
         setProjects([...projects, newProject])
     }
@@ -135,7 +153,7 @@ function Projects() {
                     <JoinProject onJoinPress={onJoinPress}></JoinProject>
                     <div>
                         {projects.map((project) => (
-                            <SingleProject id={project.id} onDataUpdate={updateLeavePress} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>
+                            <SingleProject id={project.id} code={project.code} onDataUpdate={updateLeavePress} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>
                         ))}
                     </div>
                 </div>
