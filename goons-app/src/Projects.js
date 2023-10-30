@@ -171,7 +171,7 @@ function Projects() {
 
     const onCreatePress = (name, code) => {
         const jsonString = JSON.stringify({
-            user: user,                  //probably needed
+            username: user,                  //probably needed
             description: "PLACEHOLDER DESCRIPTION",
             projectid: code,
             name: name

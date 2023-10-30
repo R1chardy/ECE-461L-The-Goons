@@ -123,7 +123,7 @@ if so, return an error message, if not, add the project to the projects collecti
 @app.route('/create_project', methods=['POST'])
 def create_project():
     data = request.get_json()
-    if data['projectid'] == '' or data['name'] == '' or data['description'] == '' or data['user'] == '':
+    if data['projectid'] == '' or data['name'] == '' or data['description'] == '' or data['username'] == '':
         return jsonify({'message': 'invalid input'}), 400
     
     projID = data.get('projectid')
@@ -134,7 +134,7 @@ def create_project():
     name = data.get('name')
     description = data.get('description')
     user = data.get('user')
-    projects.insert_one({'name': name, 'description': description, 'projectid': projID, 'users': [user], 'hwsets': []})
+    projects.insert_one({'name': name, 'description': description, 'projectid': projID, 'users': [user], 'hwsets': {'hwset1': 0, 'hwset2':0}})
     return jsonify({'message': 'Successfully added new project with ID '+projID}), 200
 
 # ------------------------------------------------------------------------- 
