@@ -14,9 +14,6 @@ hardwareSets = db["HWSets"] # hardware sets collection
 
 CORS(app, resources={r'/*': {'origins': '*'}})
 
-@app.route('/test', methods=['GET'])
-def api_test():
-    return jsonify({'test': 'testing this api!!!'})
 
 @app.route('/add_account', methods=['POST'])
 def add_account():
@@ -57,13 +54,10 @@ def login():
 @app.route('/update_projectpage', methods=['GET'])
 def get_project():
     username = request.args.get('username')
-    projectList = list(projects.find())
     user_projectList = list(projects.find({"Users": username}))
     hardwareSetsList = list(hardwareSets.find())
-    print(user_projectList)
 
     response_data = {
-        "projects": projectList,
         "user_projects": user_projectList,
         "hardwareSets": hardwareSetsList
     }
