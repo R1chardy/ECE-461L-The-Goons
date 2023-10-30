@@ -11,7 +11,7 @@ function SingleProject(props) {
     // const [code, setCode] = useState("")
 
     const LeavePressed = () => {
-        props.onDataUpdate(id)
+        props.onDataUpdate(id, code)
     }
 
     const CheckPressed = (proj, hws, num, flag) => {

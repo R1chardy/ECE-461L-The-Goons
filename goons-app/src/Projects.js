@@ -8,6 +8,7 @@ function Projects() {
     const [hwsCounts, setCounts] = useState(new Map())  //Available
     const [hwsChecked, setChecked] = useState(new Map())  //Amount checked out by each group
     const [projects, setProjects] = useState([]);
+    const [codes, setCodes] = useState([]);
     
     const firstTime = useRef(true);
 
@@ -39,6 +40,9 @@ function Projects() {
 
     const onJoinPress = (code) =>{  //BACKEND
         //Talk to backend to and get project from code
+        if(codes.includes(code)){
+            return null
+        }
         const jsonString = JSON.stringify({
             projectid: code,
             username: user
@@ -54,17 +58,23 @@ function Projects() {
         .then(data => {
             const newProject = {id: data['proj'], code: code}
             setProjects([...projects, newProject])
+            setCodes([...codes, code])
+
         })
         .catch(error => {
             console.log(error)
         });
     }
 
-    const updateLeavePress = (name) => { //BACKEND
+    const updateLeavePress = (name, code) => { //BACKEND
         console.log(name)
         //Talk to backend to remove name from project
-        const newProjects = projects.filter(project => project.id !== name);
+        const newProjects = projects.filter(project => project.code !== code)
         setProjects(newProjects)
+
+        const newCodes = codes.filter(ncode => ncode !== code)
+        setCodes(newCodes)
+        // const newCodes = codes.filter(code => code !== )
     }
 
     const updateHWSets = (proj, hws, num, code, flag) => {
@@ -137,11 +147,37 @@ function Projects() {
         }
     }
 
-    const onCreatePress = (name, code) => { //BACKEND
-        //Check with backend that takes in  (name,code)
-        const newProject = {id: name, code: code}
-        //talk with backend before adding to projects
-        setProjects([...projects, newProject])
+    const onCreatePress = (name, code) => {
+        const jsonString = JSON.stringify({
+            user: user,                  //probably needed
+            description: "PLACEHOLDER DESCRIPTION",
+            projectid: code,
+            name: name
+        });
+        fetch('http://127.0.0.1:5000/create_project', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonString,
+        })
+        .then(response => {
+            if(response.status === 200){
+                return response.json()
+            }
+            else{
+                throw new Error("oof")
+            }
+        })
+        .then(data => {
+            console.log(data)
+            const newProject = {id: name, code: code}
+            setProjects([...projects, newProject])
+            setCodes([...codes, code])
+        })
+        .catch(error => {
+            console.log(error)
+        });
     }
 
     return (
