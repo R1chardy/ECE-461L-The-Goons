@@ -93,6 +93,29 @@ def join_project():
 
 # ------------------------------------------------------------------------- 
 '''
+/leave_project route
+this api will get project id and username from frontend, check that the project exists, and remove the user from the project
+'''
+@app.route('/leave_project', methods=['POST'])
+def leave_project():
+    data = request.get_json() # get json form frontend
+    if data['projectid'] == '' or data['username'] == '':
+        return jsonify({'message': 'invalid input'}), 400
+    
+    projID = data.get('projectid')
+    # check that project exists
+    projectList = list(projects.find({'projectid': projID}))
+    if len(projectList) == 0:
+        return jsonify({'message': 'Project does not exist'}), 400
+    # check that user is in this project
+    username = data.get('username')
+    userList = list(projectList[0]['users'])
+    if username not in userList:
+        return jsonify({'message': 'User not part of specified project'}), 400
+    # remove user from project
+    projects.update_one({'projectid': projID},{'$pull': {'users': username}})
+    return jsonify({'message': 'Successfully removed user '+username+' from project with ID '+projID}), 200
+'''
 /create_project route 
 this api will get the projectid, name, and description from the frontend, check if the projectid exists in the projects collection,
 if so, return an error message, if not, add the project to the projects collection
@@ -115,7 +138,7 @@ def create_project():
 
 # ------------------------------------------------------------------------- 
 '''
-need to make /check_in_hw route (I believe a POST request)
+/check_in_hw route 
 this api will first get what HWSet it is (either hwset1 or hwset2 lol),
 and then update the avaiablilty of that hardware set in the hardwareSets collection respectively
 ALSO this will update the project that the hardware is being checked in from (specifically the quantiy of the hardware in the project)
@@ -138,7 +161,7 @@ def check_in():
     
     hwset = data.get('hwset')
     quantity = data.get('quantity')
-    # if project attempts to return more than project has checked out, return error
+    # if project attempts to return more than project has checked out, return only what they have
     if int(quantity) > int(projectList[0]['hwsets']['hwset'+str(hwset)]):
         return jsonify({'message': 'Cannot check in more than you have checked out',
                         'quant': 0}), 401
@@ -154,9 +177,10 @@ def check_in():
                     'quant': quantity}), 200
 # ------------------------------------------------------------------------- 
 '''
-need to make /check_out_hw route (I believe a POST request)
+/check_out_hw route
 this api will first get what HWSet it is, and then update the avaiablilty of that hardware set in the hardwareSets collection respectively
 ALSO this will update the project that the hardware is being checked out to (specifically the quantiy of the hardware in the project)
+needs: projectid (str), hardware set (int 1 or 2), quantity (number/int)
 '''
 @app.route('/check_out_hw', methods=['POST'])
 def check_out():
@@ -197,7 +221,7 @@ def check_out():
                     'quant': quantity}),200
 
 # ------------------------------------------------------------------------- 
-
+# deprecated
 # hardware information route
 @app.route('/get_hardware_sets', methods=['GET'])
 def get_hardware_sets():
