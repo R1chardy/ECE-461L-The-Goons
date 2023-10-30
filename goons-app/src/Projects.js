@@ -38,11 +38,8 @@ function Projects() {
         //Set up capacity, hwsCounts, and hwsChecked
     }
 
-    const onJoinPress = (code) =>{  //BACKEND
+    const onJoinPress = (code) =>{
         //Talk to backend to and get project from code
-        if(codes.includes(code)){
-            return null
-        }
         const jsonString = JSON.stringify({
             projectid: code,
             username: user
@@ -67,13 +64,38 @@ function Projects() {
     }
 
     const updateLeavePress = (name, code) => { //BACKEND
-        console.log(name)
-        //Talk to backend to remove name from project
-        const newProjects = projects.filter(project => project.code !== code)
-        setProjects(newProjects)
+        
+        const jsonString = JSON.stringify({
+            projectid: code,
+            username: user
+        });
+        fetch('http://127.0.0.1:5000/leave_project', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonString,
+        })
+        .then(response => {
+            if(response.status === 200){
+                return response.json()
+            }
+            else{
+                throw new Error("oof")
+            }
+        })
+        .then(data => {
+            console.log(data)
+            const newProjects = projects.filter(project => project.code !== code)
+            setProjects(newProjects)
 
-        const newCodes = codes.filter(ncode => ncode !== code)
-        setCodes(newCodes)
+            const newCodes = codes.filter(ncode => ncode !== code)
+            setCodes(newCodes)
+        })
+        .catch(error => {
+            console.log(error)
+        });
+        
         // const newCodes = codes.filter(code => code !== )
     }
 
