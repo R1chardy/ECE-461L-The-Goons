@@ -204,7 +204,7 @@ function Projects() {
 
     return (
         <div className="bg-tailwind h-screen bg-no-repeat flex justify-center">
-            <div className='max-w-7xl'>
+            <div className='w-full max-w-7xl'>
 
                 <div className='mt-14 flex'>
                     <div className='pr-10 grow w-[850px]'>
@@ -229,7 +229,7 @@ function Projects() {
                     </div>
                 </div>
 
-                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+                <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
 
                 <div>
                     <p className='text-center mt-10 mb-10 text-5xl font-bold'>Your Current Projects</p>

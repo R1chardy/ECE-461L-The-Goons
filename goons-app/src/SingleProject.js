@@ -24,33 +24,54 @@ function SingleProject(props) {
     // }
 
     return (
-        <div className="bg-white backdrop-filter backdrop-blur-md bg-opacity-60 shadow-md rounded-md px-8 py-5">
-            <p className='text-3xl font-bold'>Project {props.id}</p>
-
-            <div class="p-5 grid grid-cols-2 row-gap-8 md:grid-cols-4">
-                <div class="text-center md:border-r">
-                <p class="text-xs tracking-widest text-gray-800 uppercase">
-                    HW Set 1 Items
-                </p>
-                <h6 class="text-5xl font-bold">{hwsChecked.has([id,1].toString()) ? hwsChecked.get([id,1].toString()) : 0}</h6>
-                </div>
-                <div class="text-center">
-                <p class="text-xs tracking-widest text-gray-800 uppercase">
-                    HW Set 2 Items
-                </p>
-                <h6 class="text-5xl font-bold">{hwsChecked.has([id,2].toString()) ? hwsChecked.get([id,2].toString()) : 0}</h6>
+        <div className="bg-white backdrop-filter backdrop-blur-md bg-opacity-60">
+            <div className='border border-gray-200 bg-gray-50 rounded-t-xl'>
+                <div className='grid grid-cols-2 py-3 px-4 items-center'>
+                    <div className='text-xl font-bold'>Project {props.id}</div>
+                    <div className='flex justify-end'>
+                        <button
+                            type="button"
+                            onClick={LeavePressed}
+                            className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200"
+                        >
+                            Leave Project
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div style={{display: 'flex', marginBottom: 30}}>
-                <HWSet hwname={1} projname={id} hwsChecked={props.hwsChecked} CheckPressed={CheckPressed}></HWSet>
-                <HWSet hwname={2} projname={id} hwsChecked={props.hwsChecked} CheckPressed={CheckPressed}></HWSet>
-            <div style={{display: 'flex', flexDirection: 'column', marginRight: '10px'}}>
-                {/* <button style={{height: '100%', backgroundColor: joined.has(id)? 'lightGreen' : 'white'}} onClick={JoinPressed}>{joined.has(id)? 'Leave' : 'Join'}</button> */}
-                <button style={{height: '100%', backgroundColor: 'lightGreen'}} onClick={LeavePressed}>Leave</button>
+            <div className='border-x border-gray-200 p-3'>
+                <div className='px-1 text-xl font-bold'>
+                    Description
+                </div>
+                <div className='mt-2 px-1'>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
             </div>
-                {/* <input type="text" placeholder="Enter Code" onChange={handleInputChange} style={{height: '10%', marginTop: '30px'}}/> */}
+
+            <div className='border border-gray-200 rounded-b-xl mb-10'>
+                <div className="grid grid-cols-2">
+                    <div className="text-center pt-5 border-r">
+                        <h6 className="text-5xl font-bold">{hwsChecked.has([id,1].toString()) ? hwsChecked.get([id,1].toString()) : 0}</h6>
+                        <p className="text-s tracking-widest text-gray-800 uppercase mb-5">
+                            Hardware Set 1 Items
+                        </p>
+                        <div className='mb-8'>
+                            <HWSet hwname={1} projname={id} hwsChecked={props.hwsChecked} CheckPressed={CheckPressed}></HWSet>
+                        </div>
+                    </div>
+                    <div className="text-center pt-5">
+                        <h6 className="text-5xl font-bold">{hwsChecked.has([id,2].toString()) ? hwsChecked.get([id,2].toString()) : 0}</h6>
+                        <p className="text-s tracking-widest text-gray-800 uppercase mb-5">
+                            Hardware Set 2 Items
+                        </p>
+                        <div className='mb-8'>
+                            <HWSet hwname={2} projname={id} hwsChecked={props.hwsChecked} CheckPressed={CheckPressed}></HWSet>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         </div>
     );
 }
