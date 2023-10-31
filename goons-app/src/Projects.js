@@ -203,7 +203,7 @@ function Projects() {
     }
 
     return (
-        <div class="bg-tailwind bg-no-repeat place-content-center flex">
+        <div className="bg-tailwind bg-no-repeat place-content-center flex">
             <div className='max-w-7xl flex'>
                 <div className='grow w-[800px]'>
                     <p className='text-6xl font-bold'>Manage Your Projects</p>

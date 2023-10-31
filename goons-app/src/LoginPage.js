@@ -67,37 +67,53 @@ function LoginPage() {
         setPass(event.target.value)
     }
     return (
-        <div className="Login">
-            <p style={{marginLeft: rightShift+80+"px"}}>
-                Login Page
-            </p>
-            <div className="Username">
-                <form>
-                    <label style={{marginLeft: rightShift+"px"}}>
-                    Username:
-                    <input type="text" style={{marginLeft: "5px"}} placeholder="Enter Username" onChange={handleUserChange}/>
-                    </label>
-                </form>
-            </div>
-            <div className="Password">
-                <form>
-                    <label  style={{marginLeft: rightShift+5+"px"}}>
-                    Password:
-                    <input type="password" style={{marginLeft: "5px"}} placeholder="Enter Password" onChange={handlePassChange}/>
-                    </label>
-                </form>
-            </div>
-            <button onClick={loginPressed} style={{marginLeft: rightShift+80+"px"}}>
-                Login
-            </button>
-            <button onClick={signupPressed}>
-                Sign Up
-            </button>
+        <div className="flex flex-col h-[85vh] justify-center">
             <div>
+                <h2 className="text-center text-2xl font-bold text-gray-900">Sign in to your account</h2>
+            </div>
+
+            <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
+                <div className='space-y-6'>
+                    <div>
+                        <label className="block text-sm font-medium leading-6 text-gray-900">Username</label>
+                        <input
+                            type="text"
+                            required
+                            className="bg-gray-50 w-full rounded-md py-1.5 pl-3 pr-17 mr-5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                            onChange={handleUserChange}
+                        />
+                    </div>
+                    
+                    <div>
+                        <label className="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                        <input
+                            type="password"
+                            required
+                            className="bg-gray-50 w-full rounded-md py-1.5 pl-3 pr-17 mr-5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                            onChange={handlePassChange}
+                        />
+                    </div>
+
+                    <div>
+                        <button
+                            className="flex w-full justify-center rounded-md text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mt-6 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                            onClick={loginPressed}
+                        >
+                            Sign in
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            {/* <button onClick={signupPressed}>
+                Sign Up
+            </button> */}
+            {/* <div>
                 <label style={{marginLeft: rightShift+80+"px"}}>
                     {outputMessage}
                 </label>
-            </div>
+            </div> */}
         </div>
     )
 }
