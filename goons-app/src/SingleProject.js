@@ -24,7 +24,7 @@ function SingleProject(props) {
     // }
 
     return (
-        <div className="bg-white backdrop-filter backdrop-blur-md bg-opacity-60 shadow-md rounded-md m-5 p-5">
+        <div className="bg-white backdrop-filter backdrop-blur-md bg-opacity-60 shadow-md rounded-md px-8 py-5">
             <p className='text-3xl font-bold'>Project {props.id}</p>
 
             <div class="p-5 grid grid-cols-2 row-gap-8 md:grid-cols-4">

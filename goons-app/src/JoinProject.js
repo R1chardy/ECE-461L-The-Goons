@@ -13,7 +13,7 @@ function JoinProject(props) {
     }
 
     return (
-        <div className="bg-white backdrop-filter backdrop-blur-xl bg-opacity-60 shadow-md rounded-md m-5 p-5">
+        <div className="bg-white backdrop-filter backdrop-blur-xl bg-opacity-60 shadow-md rounded-md mt-3 mb-3 p-5">
             <p className='text-3xl font-bold'>Join an Existing Project</p>
             <div className='flex m-5'>
                 <div className='grow'>

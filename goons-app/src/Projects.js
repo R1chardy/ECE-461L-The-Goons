@@ -203,27 +203,43 @@ function Projects() {
     }
 
     return (
-        <div className="bg-tailwind bg-no-repeat place-content-center flex">
-            <div className='max-w-7xl flex'>
-                <div className='grow w-[800px]'>
-                    <p className='text-6xl font-bold'>Manage Your Projects</p>
-                    <CreateProject onCreatePress={onCreatePress}></CreateProject>
-                    <JoinProject onJoinPress={onJoinPress}></JoinProject>
+        <div className="bg-tailwind h-screen bg-no-repeat flex justify-center">
+            <div className='max-w-7xl'>
+
+                <div className='mt-14 flex'>
+                    <div className='pr-10 grow w-[850px]'>
+                        <p className='mb-10 text-5xl font-bold'>Manage Your Projects</p>
+                        <CreateProject onCreatePress={onCreatePress}></CreateProject>
+                        <JoinProject onJoinPress={onJoinPress}></JoinProject>
+                        {/* <p className='mt-10 mb-10 text-5xl font-bold'>Your Current Projects</p>
+                        <div>
+                            {projects.map((project) => (
+                                <SingleProject id={project.id} code={project.code} onDataUpdate={updateLeavePress} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>
+                            ))}
+                        </div> */}
+                    </div>
+                    <div className='pl-10 w-90'>
+                        <p className='mb-10 text-5xl font-bold'>Hardware Sets</p>
+                        <div>
+                            <label>Remaining Hardware Set 1: {hwsCounts.has(1)? hwsCounts.get(1) : capacity}/{capacity}</label>
+                        </div>
+                        <div>
+                            <label>Remaining Hardware Set 2: {hwsCounts.has(2)? hwsCounts.get(2) : capacity}/{capacity}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+
+                <div>
+                    <p className='text-center mt-10 mb-10 text-5xl font-bold'>Your Current Projects</p>
                     <div>
                         {projects.map((project) => (
                             <SingleProject id={project.id} code={project.code} onDataUpdate={updateLeavePress} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>
                         ))}
                     </div>
                 </div>
-                <div className='w-80'>
-                    <p className='text-6xl font-bold'>Hardware Sets</p>
-                    <div>
-                        <label>Remaining Hardware Set 1: {hwsCounts.has(1)? hwsCounts.get(1) : capacity}/{capacity}</label>
-                    </div>
-                    <div>
-                        <label>Remaining Hardware Set 2: {hwsCounts.has(2)? hwsCounts.get(2) : capacity}/{capacity}</label>
-                    </div>
-                </div>
+
             </div>
         </div>
     );
