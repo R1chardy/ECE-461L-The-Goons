@@ -19,13 +19,7 @@ function Projects() {
         if(firstTime.current){
             firstTime.current = false
             //Initialize the page
-            fetch('http://127.0.0.1:5000/update_projectpage', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: {username: user},
-        })
+            fetch('http://127.0.0.1:5000/update_projectpage?username=' + user)
             .then(response => {return response.json()})
             .then(data => {
                 pageSetup(data)

@@ -25,7 +25,7 @@ function LoginPage() {
             console.log(data)
             setOutputMessage(data.message)
             if (data.message === "Login successful") {
-                window.location.href = '/projects?user=${encodeURIComponent(' + user + ')}'
+                window.location.href = '/projects?user=' + user
             }
         })
         .catch(error => {
