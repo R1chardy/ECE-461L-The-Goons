@@ -36,7 +36,7 @@ function HWSet(props) {
             <div className='grid grid-cols-5 w-52 mr-12'>
                 <input type="text" onChange={handleCheckInChange} className="col-span-3 pl-2 py-1.5 bg-gray-50 rounded-l-lg text-gray-900 border border-gray-200 focus:ring-2 focus:ring-inset focus:ring-blue-500"/>
                 <button
-                    onClick={checkInValue(checkInInput)}
+                    onClick={() => checkInValue(checkInInput)}
                     className="col-span-2 py-1.5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-r-lg border-y border-r border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200"
                 >
                     Check in
@@ -45,7 +45,7 @@ function HWSet(props) {
             <div className='grid grid-cols-5 w-52'>
                 <input type="text" onChange={handleCheckOutChange} className="col-span-3 pl-2 py-1.5 bg-gray-50 rounded-l-lg text-gray-900 border border-gray-200 focus:ring-2 focus:ring-inset focus:ring-blue-500"/>
                 <button
-                    onClick={checkOutValue(checkOutInput)}
+                    onClick={() => checkOutValue(checkOutInput)}
                     className="col-span-2 py-1.5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-r-lg border-y border-r border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200"
                 >
                     Check out
