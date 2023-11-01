@@ -19,7 +19,7 @@ function Projects() {
         if(firstTime.current){
             firstTime.current = false
             //Initialize the page
-            fetch('http://127.0.0.1:5000/update_projectpage?username=${encodeURIComponent(' + user + ')}')
+            fetch('http://127.0.0.1:5000/update_projectpage?username=' + encodeURIComponent(user))
             .then(response => {return response.json()})
             .then(data => {
                 pageSetup(data)
@@ -30,11 +30,12 @@ function Projects() {
         }
     });
     
-    const pageSetup = (jsonFile) =>{
-        // for (const proj of jsonFile.projects) {
-        //     const newProject = { id: proj.name};
-        //     setProjects(projects => [...projects, newProject]);
-        // }
+    const pageSetup = (jsonFile) =>{    //FIX
+        console.log(jsonFile.user_projects)
+        for (const proj of jsonFile.user_projects) {
+            const newProject = { id: proj.name, code: proj.projectid};
+            setProjects(projects => [...projects, newProject]);
+        }
         //Set up capacity, hwsCounts, and hwsChecked
     }
 
