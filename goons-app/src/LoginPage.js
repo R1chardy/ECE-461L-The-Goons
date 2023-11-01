@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 // import { Outlet, Link } from "react-router-dom";
 
 function LoginPage() {
-    const rightShift = 100; //Change this variable to shift everything right or left
 
     const [user, setUser] = useState("")
     const[pass, setPass] = useState("")
@@ -101,6 +100,17 @@ function LoginPage() {
                         >
                             Sign in
                         </button>
+                        <button
+                            className="flex w-full justify-center rounded-md text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mt-6 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                            onClick={signupPressed}
+                        >
+                            Create Account
+                        </button>
+                    </div>
+                    <div>
+                        <label>
+                            {outputMessage}
+                        </label>
                     </div>
                 </div>
             </div>
