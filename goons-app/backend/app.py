@@ -51,9 +51,10 @@ def login():
             return jsonify({'message': 'Invalid username or password'}), 400
     return jsonify({'message': 'Invalid username or password'}), 400
 
-@app.route('/update_projectpage', methods=['GET'])
+@app.route('/update_projectpage', methods=['POST'])
 def get_project():
-    username = request.args.get('username')
+    data = request.get_json() # request should be a json with username
+    username = data.get('username')
     print(username)
     user_projectList = list(projects.find({"Users": username}))
     hardwareSetsList = list(hardwareSets.find())
