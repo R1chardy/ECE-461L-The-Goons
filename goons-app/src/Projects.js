@@ -4,7 +4,7 @@ import CreateProject from './CreateProject'
 import JoinProject from './JoinProject'
 
 function Projects() {
-    const capacity = 100
+    const [capacity, setCapacity] = useState(50)
     const [hwsCounts, setCounts] = useState(new Map())  //Available
     const [hwsChecked, setChecked] = useState(new Map())  //Amount checked out by each group
     const [projects, setProjects] = useState([]);
@@ -17,7 +17,7 @@ function Projects() {
     const user = urlParams.get('user');
 
 
-    useEffect(() => {   //BACKEND
+    useEffect(() => {
         if(firstTime.current){
             firstTime.current = false
             //Initialize the page
@@ -32,13 +32,37 @@ function Projects() {
         }
     });
     
-    const pageSetup = (jsonFile) =>{    //FIX
-        console.log(jsonFile.user_projects)
+    const pageSetup = (jsonFile) =>{
         for (const proj of jsonFile.user_projects) {
             const newProject = { id: proj.name, code: proj.projectid};
-            setProjects(projects => [...projects, newProject]);
+            setProjects((projects) => {
+                return [...projects, newProject]
+            })
+            console.log(proj.hwsets.hwset1)
+            let i = 1
+            for (const key in proj.hwsets){
+                setChecked((hwsChecked) => {
+                    const newhwsChecked = new Map(hwsChecked)
+                    newhwsChecked.set([proj.name,i].toString(), proj.hwsets[key])
+                    i++
+                    return newhwsChecked
+                })
+            }
+
+        }   //Change hwcounts to [code,hws]
+        // console.log(jsonFile.hardwareSets)
+        let i = 1
+        for (const hwSet of jsonFile.hardwareSets) {
+            setCapacity(() => {
+                return hwSet['capacity']
+            })
+            setCounts((hwsCounts) => {
+                const newhwsCounts = new Map(hwsCounts)
+                newhwsCounts.set(i, hwSet['availability'])
+                i++
+                return newhwsCounts
+            })
         }
-        //Set up capacity, hwsCounts, and hwsChecked
     }
 
     const onJoinPress = (code) =>{
@@ -67,7 +91,7 @@ function Projects() {
         });
     }
 
-    const updateLeavePress = (name, code) => { //BACKEND
+    const updateLeavePress = (name, code) => {
         
         const jsonString = JSON.stringify({
             projectid: code,

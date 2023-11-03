@@ -54,8 +54,8 @@ def login():
 @app.route('/update_projectpage', methods=['GET'])
 def get_project():
     username = request.args.get('username')
-    print(username)
-    user_projectList = list(projects.find({"Users": username}))
+    # print(username)
+    user_projectList = list(projects.find({"users": username}))
     hardwareSetsList = list(hardwareSets.find())
 
     response_data = {
@@ -88,7 +88,7 @@ def join_project():
         if usernames == username:
             return jsonify({'message': 'User already part of specified project'}), 400
         
-    projects.update_one({'projectid': projID},{'$push': {'users': username}})
+    projects.update_one({'projectid': projID},{'$push': {'users': username}}, upsert=True)
     return jsonify({'message': 'Successfully added user '+username+' to project with ID '+projID,
                     'proj': projectList[0].get('name'), 'description': projectList[0].get('description')}), 200
 
@@ -114,7 +114,7 @@ def leave_project():
     if username not in userList:
         return jsonify({'message': 'User not part of specified project'}), 402
     # remove user from project
-    projects.update_one({'projectid': projID},{'$pull': {'users': username}})
+    projects.update_one({'projectid': projID},{'$pull': {'users': username}}, upsert=True)
     return jsonify({'message': 'Successfully removed user '+username+' from project with ID '+projID}), 200
 '''
 /create_project route 
@@ -169,12 +169,12 @@ def check_in():
         quantity = int(projectList[0]['hwsets']['hwset'+str(hwset)])
         message = 'Cannot check in more than you have checked out'
     # now to update hwset collection
-    hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': quantity}})
+    hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': quantity}}, upsert=True)
     
     #now update the project collection
     projects.update_one({'projectid': projID}, {'$inc': {
         'hwsets.hwset'+str(hwset): -1*quantity
-    }})
+    }}, upsert=True)
     
     return jsonify({'message': message,
                     'quant': quantity}), 200
@@ -211,12 +211,12 @@ def check_out():
         # set flag for return
         message = 'Checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset)+' because ran out'
     # now to update hwset collection
-    hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': -1*quantity}})
+    hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': -1*quantity}}, upsert=True)
     
     #now update the project collection
     projects.update_one({'projectid': projID}, {'$inc': {
         'hwsets.hwset'+str(hwset): quantity
-    }})
+    }}, upsert=True)
     return jsonify({'message': message,
                     'quant': quantity}),200
 
