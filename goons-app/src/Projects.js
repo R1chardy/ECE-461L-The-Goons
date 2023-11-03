@@ -43,7 +43,7 @@ function Projects() {
             for (const key in proj.hwsets){
                 setChecked((hwsChecked) => {
                     const newhwsChecked = new Map(hwsChecked)
-                    newhwsChecked.set([proj.name,i].toString(), proj.hwsets[key])
+                    newhwsChecked.set([proj.projectid,i].toString(), proj.hwsets[key])
                     i++
                     return newhwsChecked
                 })
@@ -132,7 +132,7 @@ function Projects() {
     }
 
     const updateHWSets = (proj, hws, num, code, flag) => {
-        const currChecked = hwsChecked.has([proj,hws].toString())? hwsChecked.get([proj,hws].toString()) : 0
+        const currChecked = hwsChecked.has([code,hws].toString())? hwsChecked.get([code,hws].toString()) : 0
         const currAvail = hwsCounts.has(hws)? hwsCounts.get(hws) : capacity
         const jsonString = JSON.stringify({
             projectid: code,
@@ -157,7 +157,7 @@ function Projects() {
                 console.log(amt)
 
                 const newChecked = new Map(hwsChecked)
-                newChecked.set([proj,hws].toString(), currChecked-amt)
+                newChecked.set([code,hws].toString(), currChecked-amt)
                 setChecked(newChecked)
 
                 const newCounts = new Map(hwsCounts)
@@ -188,7 +188,7 @@ function Projects() {
                 console.log(amt)
 
                 const newChecked = new Map(hwsChecked)
-                newChecked.set([proj,hws].toString(), currChecked+amt)
+                newChecked.set([code,hws].toString(), currChecked+amt)
                 setChecked(newChecked)
                 
                 const newCounts = new Map(hwsCounts)
@@ -234,10 +234,17 @@ function Projects() {
         });
     }
 
+    const logoutPressed = () => {
+        window.location.href = '/'
+    }
+
     return (
         <div className="bg-tailwind h-screen bg-no-repeat flex justify-center">
             <div className='w-full max-w-7xl'>
-
+                <button type="button" className="justify-self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mt-6 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    onClick={logoutPressed}>
+                    Logout
+                </button>
                 <div className='mt-14 flex'>
                     <div className='pr-10 grow w-[850px]'>
                         <p className='mb-10 text-5xl font-bold'>Manage Your Projects</p>

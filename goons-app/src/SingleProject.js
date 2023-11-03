@@ -32,8 +32,7 @@ function SingleProject(props) {
                         <button
                             type="button"
                             onClick={LeavePressed}
-                            className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200"
-                        >
+                            className="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200">
                             Leave Project
                         </button>
                     </div>
@@ -52,7 +51,7 @@ function SingleProject(props) {
             <div className='border border-gray-200 rounded-b-xl mb-10'>
                 <div className="grid grid-cols-2">
                     <div className="text-center pt-5 border-r">
-                        <h6 className="text-5xl font-bold">{hwsChecked.has([id,1].toString()) ? hwsChecked.get([id,1].toString()) : 0}</h6>
+                        <h6 className="text-5xl font-bold">{hwsChecked.has([code,1].toString()) ? hwsChecked.get([code,1].toString()) : 0}</h6>
                         <p className="text-s tracking-widest text-gray-800 uppercase mb-5">
                             Hardware Set 1 Items
                         </p>
@@ -61,7 +60,7 @@ function SingleProject(props) {
                         </div>
                     </div>
                     <div className="text-center pt-5">
-                        <h6 className="text-5xl font-bold">{hwsChecked.has([id,2].toString()) ? hwsChecked.get([id,2].toString()) : 0}</h6>
+                        <h6 className="text-5xl font-bold">{hwsChecked.has([code,2].toString()) ? hwsChecked.get([code,2].toString()) : 0}</h6>
                         <p className="text-s tracking-widest text-gray-800 uppercase mb-5">
                             Hardware Set 2 Items
                         </p>
