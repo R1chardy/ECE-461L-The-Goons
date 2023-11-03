@@ -20,6 +20,7 @@ function Projects() {
     useEffect(() => {
         if(firstTime.current){
             firstTime.current = false
+            console.log("hihi")
             //Initialize the page
             fetch('http://127.0.0.1:5000/update_projectpage?username=' + user)
             .then(response => {return response.json()})
@@ -30,7 +31,7 @@ function Projects() {
                 console.log(error)
             });
         }
-    });
+    }, []);
     
     const pageSetup = (jsonFile) =>{
         for (const proj of jsonFile.user_projects) {
@@ -48,8 +49,7 @@ function Projects() {
                     return newhwsChecked
                 })
             }
-
-        }   //Change hwcounts to [code,hws]
+        }
         // console.log(jsonFile.hardwareSets)
         let i = 1
         for (const hwSet of jsonFile.hardwareSets) {
@@ -78,7 +78,14 @@ function Projects() {
             },
             body: jsonString,
         })
-        .then(response => {return response.json()})
+        .then(response => {
+            if(response.status === 200){
+                return response.json()
+            }
+            else{
+                throw new Error("oof code")
+            }
+        })
         .then(data => {
             const newProject = {id: data['proj'], code: code, description: data['description'] }
             setProjects([...projects, newProject])
