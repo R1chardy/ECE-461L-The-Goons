@@ -54,6 +54,7 @@ def login():
 @app.route('/update_projectpage', methods=['GET'])
 def get_project():
     username = request.args.get('username')
+    print(username)
     user_projectList = list(projects.find({"Users": username}))
     hardwareSetsList = list(hardwareSets.find())
 
