@@ -45,7 +45,7 @@ function SingleProject(props) {
                     Description
                 </div>
                 <div className='mt-2 px-1'>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    {description}
                 </div>
             </div>
 
@@ -70,18 +70,6 @@ function SingleProject(props) {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="grow">
-                <label htmlFor="project_description" className="block mb-2 text-sm font-medium text-gray-900">
-                    Project Description
-                </label>
-                <textarea
-                    id="description"
-                    className="bg-gray-50 rounded-md py-2 px-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500"
-                    rows="4" // You can adjust the number of rows to control the height of the text box
-                    value={description} 
-                    readOnly
-                />
             </div>
         </div>
     );

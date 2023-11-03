@@ -134,7 +134,7 @@ def create_project():
     
     name = data.get('name')
     description = data.get('description')
-    user = data.get('user')
+    user = data.get('username')
     projects.insert_one({'name': name, 'description': description, 'projectid': projID, 'users': [user], 'hwsets': {'hwset1': 0, 'hwset2':0}})
     return jsonify({'message': 'Successfully added new project with ID '+projID}), 200
 
