@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import SingleProject from './SingleProject';
 import CreateProject from './CreateProject'
 import JoinProject from './JoinProject'
 
 function Projects() {
+    const [change, setChange] = useState(false)
+
     const [capacity, setCapacity] = useState(50)
     const [hwsCounts, setCounts] = useState(new Map())  //Available
     const [hwsChecked, setChecked] = useState(new Map())  //Amount checked out by each group
     const [projects, setProjects] = useState([]);
     const [codes, setCodes] = useState([]);
-
-    const firstTime = useRef(true);
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -18,51 +18,56 @@ function Projects() {
 
 
     useEffect(() => {
-        if(firstTime.current){
-            firstTime.current = false
-            console.log("hihi")
-            //Initialize the page
-            fetch('http://127.0.0.1:5000/update_projectpage?username=' + user)
-            .then(response => {return response.json()})
-            .then(data => {
-                pageSetup(data)
-            })
-            .catch(error => {
-                console.log(error)
-            });
-        }
-    }, []);
+        // console.log("hihi")
+        //Initialize the page
+        fetch('http://127.0.0.1:5000/update_projectpage?username=' + user)
+        .then(response => {return response.json()})
+        .then(data => {
+            pageSetup(data)
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }, [change,user]);
     
     const pageSetup = (jsonFile) =>{
+        setCounts(new Map())
+        setChecked(new Map())
+        setProjects([])
         for (const proj of jsonFile.user_projects) {
             const newProject = { id: proj.name, code: proj.projectid};
             setProjects((projects) => {
                 return [...projects, newProject]
             })
-            console.log(proj.hwsets.hwset1)
-            let i = 1
-            for (const key in proj.hwsets){
-                setChecked((hwsChecked) => {
-                    const newhwsChecked = new Map(hwsChecked)
+            // console.log(proj.hwsets.hwset1)
+
+            setChecked((hwsChecked) => {
+                let i = 1
+                const newhwsChecked = new Map(hwsChecked)
+                for (const key in proj.hwsets){
                     newhwsChecked.set([proj.projectid,i].toString(), proj.hwsets[key])
                     i++
-                    return newhwsChecked
-                })
-            }
+                }
+                return newhwsChecked
+            })
         }
         // console.log(jsonFile.hardwareSets)
-        let i = 1
-        for (const hwSet of jsonFile.hardwareSets) {
-            setCapacity(() => {
+
+        setCapacity(() => {
+            for (const hwSet of jsonFile.hardwareSets) {
                 return hwSet['capacity']
-            })
-            setCounts((hwsCounts) => {
-                const newhwsCounts = new Map(hwsCounts)
+            }
+        })
+
+        setCounts((hwsCounts) => {
+            let i = 1
+            const newhwsCounts = new Map(hwsCounts)
+            for (const hwSet of jsonFile.hardwareSets) {
                 newhwsCounts.set(i, hwSet['availability'])
                 i++
-                return newhwsCounts
-            })
-        }
+            }
+            return newhwsCounts
+        })
     }
 
     const onJoinPress = (code) =>{
@@ -87,15 +92,19 @@ function Projects() {
             }
         })
         .then(data => {
+            console.log(data['message'])
+
             const newProject = {id: data['proj'], code: code, description: data['description'] }
             setProjects([...projects, newProject])
             setCodes([...codes, code])
-            console.log(data)
-            console.log(data['description'])
+            // console.log(data)
+            // console.log(data['description'])
+            setChange(!change)
         })
         .catch(error => {
             console.log(error)
         });
+        
     }
 
     const updateLeavePress = (name, code) => {
@@ -112,7 +121,7 @@ function Projects() {
             body: jsonString,
         })
         .then(response => {
-            console.log(response.status)
+            // console.log(response.status)
             if(response.status === 200){
                 return response.json()
             }
@@ -122,20 +131,21 @@ function Projects() {
             }
         })
         .then(data => {
-            console.log(data)
+            console.log(data['message'])
+
+            // console.log(data)
             const newProjects = projects.filter(project => project.code !== code)
             setProjects(newProjects)
 
             const newCodes = codes.filter(ncode => ncode !== code)
             setCodes(newCodes)
             
-            console.log(data)
+            // console.log(data)
+            setChange(!change)
         })
         .catch(error => {
             console.log(error)
         });
-        
-        // const newCodes = codes.filter(code => code !== )
     }
 
     const updateHWSets = (proj, hws, num, code, flag) => {
@@ -161,7 +171,7 @@ function Projects() {
                 const amt = data['quant']
 
                 console.log(data['message'])
-                console.log(amt)
+                // console.log(amt)
 
                 const newChecked = new Map(hwsChecked)
                 newChecked.set([code,hws].toString(), currChecked-amt)
@@ -170,6 +180,8 @@ function Projects() {
                 const newCounts = new Map(hwsCounts)
                 newCounts.set(hws, currAvail+amt)
                 setCounts(newCounts)
+
+                setChange(!change)
             })
             .catch(error => {
                 console.log(error)
@@ -192,7 +204,7 @@ function Projects() {
                 const amt = data['quant']
 
                 console.log(data['message'])
-                console.log(amt)
+                // console.log(amt)
 
                 const newChecked = new Map(hwsChecked)
                 newChecked.set([code,hws].toString(), currChecked+amt)
@@ -201,6 +213,8 @@ function Projects() {
                 const newCounts = new Map(hwsCounts)
                 newCounts.set(hws, currAvail-amt)
                 setCounts(newCounts)
+
+                setChange(!change)
             })
             .catch(error => {
                 console.log(error)
@@ -231,10 +245,14 @@ function Projects() {
             }
         })
         .then(data => {
-            console.log(data)
+            console.log(data['message'])
+
+            // console.log(data)
             const newProject = {id: name, code: code, description: description}
             setProjects([...projects, newProject])
             setCodes([...codes, code])
+
+            setChange(!change)
         })
         .catch(error => {
             console.log(error)

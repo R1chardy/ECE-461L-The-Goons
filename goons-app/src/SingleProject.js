@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import HWSet from './HWSet'
 
 function SingleProject(props) {
@@ -16,7 +15,7 @@ function SingleProject(props) {
 
     const CheckPressed = (proj, hws, num, flag) => {
         props.onHWUpdate(proj, hws, num, code, flag)
-        console.log(code)
+        // console.log(code)
     }
 
     // const handleInputChange = (event) => {
