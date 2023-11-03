@@ -9,11 +9,13 @@ function Projects() {
     const [hwsChecked, setChecked] = useState(new Map())  //Amount checked out by each group
     const [projects, setProjects] = useState([]);
     const [codes, setCodes] = useState([]);
-    
+
     const firstTime = useRef(true);
 
-    const urlParams = new URLSearchParams(window.location.search);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
     const user = urlParams.get('user');
+
 
     useEffect(() => {   //BACKEND
         if(firstTime.current){
@@ -42,7 +44,7 @@ function Projects() {
         //Talk to backend to and get project from code
         const jsonString = JSON.stringify({
             projectid: code,
-            username: user
+            username: user,
         });
         fetch('http://127.0.0.1:5000/join_project', {
             method: 'POST',
@@ -53,10 +55,11 @@ function Projects() {
         })
         .then(response => {return response.json()})
         .then(data => {
-            const newProject = {id: data['proj'], code: code}
+            const newProject = {id: data['proj'], code: code, description: data['description'] }
             setProjects([...projects, newProject])
             setCodes([...codes, code])
-
+            console.log(data)
+            console.log(data['description'])
         })
         .catch(error => {
             console.log(error)
@@ -67,7 +70,7 @@ function Projects() {
         
         const jsonString = JSON.stringify({
             projectid: code,
-            username: user
+            username: user,
         });
         fetch('http://127.0.0.1:5000/leave_project', {
             method: 'POST',
@@ -77,11 +80,13 @@ function Projects() {
             body: jsonString,
         })
         .then(response => {
+            console.log(response.status)
             if(response.status === 200){
                 return response.json()
             }
             else{
-                throw new Error("oof")
+                throw new Error(response.json())
+                
             }
         })
         .then(data => {
@@ -91,6 +96,8 @@ function Projects() {
 
             const newCodes = codes.filter(ncode => ncode !== code)
             setCodes(newCodes)
+            
+            console.log(data)
         })
         .catch(error => {
             console.log(error)
@@ -169,11 +176,11 @@ function Projects() {
         }
     }
 
-    const onCreatePress = (name, code) => {
+    const onCreatePress = (name, code, description) => {
         const jsonString = JSON.stringify({
             username: user,                  //probably needed
-            description: "PLACEHOLDER DESCRIPTION",
             projectid: code,
+            description: description,
             name: name
         });
         fetch('http://127.0.0.1:5000/create_project', {
@@ -193,7 +200,7 @@ function Projects() {
         })
         .then(data => {
             console.log(data)
-            const newProject = {id: name, code: code}
+            const newProject = {id: name, code: code, description: description}
             setProjects([...projects, newProject])
             setCodes([...codes, code])
         })
@@ -211,7 +218,7 @@ function Projects() {
                     <JoinProject onJoinPress={onJoinPress}></JoinProject>
                     <div>
                         {projects.map((project) => (
-                            <SingleProject id={project.id} code={project.code} onDataUpdate={updateLeavePress} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>
+                            <SingleProject id={project.id} code={project.code} description={project.description} onDataUpdate={updateLeavePress} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>
                         ))}
                     </div>
                 </div>

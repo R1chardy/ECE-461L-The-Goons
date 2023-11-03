@@ -6,7 +6,9 @@ function JoinProject(props) {
 
     const handleCodeChange = (event) => {
         setCode(event.target.value)
+    
     }
+    
 
     const joinPressed = () => {
         props.onJoinPress(code)

@@ -89,7 +89,7 @@ def join_project():
         
     projects.update_one({'projectid': projID},{'$push': {'users': username}})
     return jsonify({'message': 'Successfully added user '+username+' to project with ID '+projID,
-                    'proj': projectList[0].get('name')}), 200
+                    'proj': projectList[0].get('name'), 'description': projectList[0].get('description')}), 200
 
 # ------------------------------------------------------------------------- 
 '''
@@ -106,12 +106,12 @@ def leave_project():
     # check that project exists
     projectList = list(projects.find({'projectid': projID}))
     if len(projectList) == 0:
-        return jsonify({'message': 'Project does not exist'}), 400
+        return jsonify({'message': 'Project does not exist'}), 401
     # check that user is in this project
     username = data.get('username')
     userList = list(projectList[0]['users'])
     if username not in userList:
-        return jsonify({'message': 'User not part of specified project'}), 400
+        return jsonify({'message': 'User not part of specified project'}), 402
     # remove user from project
     projects.update_one({'projectid': projID},{'$pull': {'users': username}})
     return jsonify({'message': 'Successfully removed user '+username+' from project with ID '+projID}), 200
@@ -154,7 +154,7 @@ def check_in():
                         'quant': 0}), 400
     
     projID = data.get('projectid')
-    # check that project exists
+    # check that project exists 
     projectList = list(projects.find({'projectid': projID}))
     if len(projectList) == 0:
         return jsonify({'message': 'Project does not exist',
