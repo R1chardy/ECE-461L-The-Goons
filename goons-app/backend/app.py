@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_bcrypt import Bcrypt 
 from pymongo import MongoClient
 from bson import json_util
 import json
 from config import uri
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app) 
 client = MongoClient(uri)
 db = client["Application"] # main application database
 users = db["Users"] # user collection
@@ -29,7 +31,8 @@ def add_account():
     if len(usernameList) > 0:
         return jsonify({'message': 'Username already exists'}), 400
     else:
-        users.insert_one({"username": username, "password": password}) # inserts new acc in db    
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        users.insert_one({"username": username, "password": hashed_password}) # inserts new acc in db    
         return jsonify({"message": "Account added successfully."}), 200
     
 @app.route('/login', methods=['POST'])
@@ -45,7 +48,9 @@ def login():
 
     usernameList = list(users.find({"username": username}))
     for user in usernameList:
-        if user["password"] == password:
+        hashed_password = user['password']
+        is_valid = bcrypt.check_password_hash(hashed_password, password)
+        if is_valid:
             return jsonify({'message': 'Login successful'}), 200
         else:
             return jsonify({'message': 'Invalid username or password'}), 400
