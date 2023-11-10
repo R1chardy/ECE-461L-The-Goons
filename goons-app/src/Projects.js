@@ -98,7 +98,6 @@ function Projects() {
             setProjects([...projects, newProject])
             setCodes([...codes, code])
             // console.log(data)
-            // console.log(data['description'])
             setChange(!change)
         })
         .catch(error => {
