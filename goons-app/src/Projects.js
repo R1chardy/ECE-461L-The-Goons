@@ -20,7 +20,9 @@ function Projects() {
     useEffect(() => {
         document.title = 'Projects';
         //Initialize the page
-        fetch('http://127.0.0.1:5000/update_projectpage?username=' + user)
+        // fetch('http://127.0.0.1:5000/update_projectpage?username=' + user)
+        fetch('https://ece461l-goons-backend-7a24e55baed0.herokuapp.com/update_projectpage?username=' + user)
+        
         .then(response => {return response.json()})
         .then(data => {
             pageSetup(data)
@@ -76,7 +78,8 @@ function Projects() {
             projectid: code,
             username: user,
         });
-        fetch('http://127.0.0.1:5000/join_project', {
+        // fetch('http://127.0.0.1:5000/join_project', {
+        fetch('https://ece461l-goons-backend-7a24e55baed0.herokuapp.com/join_project', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -111,7 +114,8 @@ function Projects() {
             projectid: code,
             username: user,
         });
-        fetch('http://127.0.0.1:5000/leave_project', {
+        // fetch('http://127.0.0.1:5000/leave_project', {
+        fetch('https://ece461l-goons-backend-7a24e55baed0.herokuapp.com/leave_project', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -157,7 +161,8 @@ function Projects() {
         if(flag === 1){ //Checking in
             //Talk with backend to get amount checked in
             
-            fetch('http://127.0.0.1:5000/check_in_hw', {
+            // fetch('http://127.0.0.1:5000/check_in_hw', {
+            fetch('https://ece461l-goons-backend-7a24e55baed0.herokuapp.com/', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -190,7 +195,8 @@ function Projects() {
         else {  //Checking out
             //Talk with backend to get amount checked out
 
-            fetch('http://127.0.0.1:5000/check_out_hw', {
+            // fetch('http://127.0.0.1:5000/check_out_hw', {
+            fetch('https://ece461l-goons-backend-7a24e55baed0.herokuapp.com/check_out_hw', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -227,7 +233,8 @@ function Projects() {
             description: desc,
             name: name
         });
-        fetch('http://127.0.0.1:5000/create_project', {
+        // fetch('http://127.0.0.1:5000/create_project', {
+        fetch('https://ece461l-goons-backend-7a24e55baed0.herokuapp.com/create_project', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
