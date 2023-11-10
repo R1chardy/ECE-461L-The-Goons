@@ -162,7 +162,7 @@ function Projects() {
             //Talk with backend to get amount checked in
             
             // fetch('http://127.0.0.1:5000/check_in_hw', {
-            fetch('https://ece461l-goons-backend-7a24e55baed0.herokuapp.com/', {
+            fetch('https://ece461l-goons-backend-7a24e55baed0.herokuapp.com/check_in_hw', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
