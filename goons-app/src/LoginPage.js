@@ -17,7 +17,8 @@ function LoginPage() {
             password: pass
         });
         
-        fetch('http://127.0.0.1:5000/login', {
+        // fetch('http://127.0.0.1:5000/login', {
+        fetch('https://ece461l-goons-backend-7a24e55baed0.herokuapp.com/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -44,7 +45,8 @@ function LoginPage() {
             password: pass
         });
 
-        fetch('http://127.0.0.1:5000/add_account', {
+        // fetch('http://127.0.0.1:5000/add_account', {
+        fetch('https://ece461l-goons-backend-7a24e55baed0.herokuapp.com/add_account', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
