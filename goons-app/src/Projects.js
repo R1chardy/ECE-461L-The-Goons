@@ -18,6 +18,7 @@ function Projects() {
 
 
     useEffect(() => {
+        document.title = 'Projects';
         // console.log("hihi")
         //Initialize the page
         fetch('http://127.0.0.1:5000/update_projectpage?username=' + user)

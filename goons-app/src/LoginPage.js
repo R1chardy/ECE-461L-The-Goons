@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { Outlet, Link } from "react-router-dom";
 
 function LoginPage() {
@@ -6,6 +6,10 @@ function LoginPage() {
     const [user, setUser] = useState("")
     const[pass, setPass] = useState("")
     const[outputMessage, setOutputMessage] = useState("")
+
+    useEffect(() => {
+        document.title = 'Login';
+      }, []);
 
     const loginPressed = () => {
         const jsonString = JSON.stringify({
