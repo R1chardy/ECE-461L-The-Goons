@@ -35,7 +35,7 @@ function Projects() {
         setChecked(new Map())
         setProjects([])
         for (const proj of jsonFile.user_projects) {
-            const newProject = { id: proj.name, code: proj.projectid};
+            const newProject = { "id": proj.name, "code": proj.projectid, "description": proj.description};
             setProjects((projects) => {
                 return [...projects, newProject]
             })
@@ -94,7 +94,7 @@ function Projects() {
         .then(data => {
             console.log(data['message'])
 
-            const newProject = {id: data['proj'], code: code, description: data['description'] }
+            const newProject = {"id": data['proj'], "code": code, "description": data['description'] }
             setProjects([...projects, newProject])
             setCodes([...codes, code])
             // console.log(data)
@@ -222,11 +222,11 @@ function Projects() {
         }
     }
 
-    const onCreatePress = (name, code, description) => {
+    const onCreatePress = (name, code, desc) => {
         const jsonString = JSON.stringify({
             username: user,                  //probably needed
             projectid: code,
-            description: description,
+            description: desc,
             name: name
         });
         fetch('http://127.0.0.1:5000/create_project', {
@@ -248,7 +248,7 @@ function Projects() {
             console.log(data['message'])
 
             // console.log(data)
-            const newProject = {id: name, code: code, description: description}
+            const newProject = {"id": name, "code": code, "description": desc}
             setProjects([...projects, newProject])
             setCodes([...codes, code])
 
@@ -299,7 +299,7 @@ function Projects() {
                     <p className='text-center mt-10 mb-10 text-5xl font-bold'>Your Current Projects</p>
                     <div>
                         {projects.map((project) => (
-                            <SingleProject id={project.id} code={project.code} description={project.description} onDataUpdate={updateLeavePress} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>
+                            <SingleProject id={project["id"]} code={project["code"]} description={project["description"]} onDataUpdate={updateLeavePress} hwsChecked={hwsChecked} onHWUpdate={updateHWSets}></SingleProject>
                         ))}
                     </div>
                 </div>

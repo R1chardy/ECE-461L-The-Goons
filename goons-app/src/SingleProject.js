@@ -15,7 +15,7 @@ function SingleProject(props) {
 
     const CheckPressed = (proj, hws, num, flag) => {
         props.onHWUpdate(proj, hws, num, code, flag)
-        // console.log(code)
+        // console.log(description)
     }
 
     // const handleInputChange = (event) => {
