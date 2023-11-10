@@ -97,7 +97,6 @@ function Projects() {
             const newProject = {"id": data['proj'], "code": code, "description": data['description'] }
             setProjects([...projects, newProject])
             setCodes([...codes, code])
-            // console.log(data)
             setChange(!change)
         })
         .catch(error => {
