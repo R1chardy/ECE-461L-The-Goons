@@ -275,6 +275,7 @@ function Projects() {
                     onClick={logoutPressed}>
                     Logout
                 </button>
+                <label>Logged in as {user}</label>
                 <div className='mt-14 flex'>
                     <div className='pr-10 grow w-[850px]'>
                         <p className='mb-10 text-5xl font-bold'>Manage Your Projects</p>
