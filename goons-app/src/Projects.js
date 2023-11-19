@@ -44,15 +44,10 @@ function Projects() {
             // console.log(proj.hwsets.hwset1)
 
             setChecked((hwsChecked) => {
-                let i = 1
-                const newhwsChecked = new Map(hwsChecked)
-                for (const key in proj.hwsets){
-                    newhwsChecked.set([proj.projectid,i].toString(), proj.hwsets[key])
-                    i++
-                }
-                return newhwsChecked
+                SetUpChecked(hwsChecked)
             })
         }
+
         // console.log(jsonFile.hardwareSets)
 
         setCapacity(() => {
@@ -62,14 +57,28 @@ function Projects() {
         })
 
         setCounts((hwsCounts) => {
-            let i = 1
-            const newhwsCounts = new Map(hwsCounts)
-            for (const hwSet of jsonFile.hardwareSets) {
-                newhwsCounts.set(i, hwSet['availability'])
-                i++
-            }
-            return newhwsCounts
+            SetUpCounts(hwsCounts)
         })
+    }
+
+    const SetUpCounts = (hwsCounts) => {
+        let i = 1
+        const newhwsCounts = new Map(hwsCounts)
+        for (const hwSet of jsonFile.hardwareSets) {
+            newhwsCounts.set(i, hwSet['availability'])
+            i++
+        }
+        return newhwsCounts
+    }
+
+    const SetUpChecked = (hwsChecked) => {
+        let i = 1
+        const newhwsChecked = new Map(hwsChecked)
+        for (const key in proj.hwsets){
+            newhwsChecked.set([proj.projectid,i].toString(), proj.hwsets[key])
+            i++
+        }
+        return newhwsChecked
     }
 
     const onJoinPress = (code) =>{
