@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 function HWSet(props) {
 
     const hwname = props.hwname
-    const projname = props.projname
+    // const projname = props.projname
     // const hwsChecked = props.hwsChecked
 
     const [checkInInput, setCheckIn] = useState(0)
@@ -12,14 +12,14 @@ function HWSet(props) {
     const checkInValue = (num) => {
         // if(!isNaN(num) && (joined.has(projname))) {
         if(!isNaN(num)){
-            props.CheckPressed(projname, hwname, num, 1)    //1 for check in
+            props.CheckPressed(hwname, num, 1)    //1 for check in
         }
     }
 
     const checkOutValue = (num) => {
         // if(!isNaN(num) && (joined.has(projname))){
         if(!isNaN(num)){
-            props.CheckPressed(projname, hwname, num, -1)   //-1 for check out
+            props.CheckPressed(hwname, num, -1)   //-1 for check out
         }
     }
 

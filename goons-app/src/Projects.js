@@ -108,7 +108,7 @@ function Projects() {
         
     }
 
-    const updateLeavePress = (name, code) => {
+    const updateLeavePress = (code) => {
         
         const jsonString = JSON.stringify({
             projectid: code,
@@ -150,7 +150,7 @@ function Projects() {
         });
     }
 
-    const updateHWSets = (proj, hws, num, code, flag) => {
+    const updateHWSets = (hws, num, code, flag) => {
         const currChecked = hwsChecked.has([code,hws].toString())? hwsChecked.get([code,hws].toString()) : 0
         const currAvail = hwsCounts.has(hws)? hwsCounts.get(hws) : capacity
         const jsonString = JSON.stringify({
