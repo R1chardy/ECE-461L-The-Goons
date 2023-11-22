@@ -11,14 +11,14 @@ function HWSet(props) {
 
     const checkInValue = (num) => {
         // if(!isNaN(num) && (joined.has(projname))) {
-        if(!isNaN(num)){
+        if(!isNaN(num) && num >= 0){
             props.CheckPressed(hwname, num, 1)    //1 for check in
         }
     }
 
     const checkOutValue = (num) => {
         // if(!isNaN(num) && (joined.has(projname))){
-        if(!isNaN(num)){
+        if(!isNaN(num) && num >= 0){
             props.CheckPressed(hwname, num, -1)   //-1 for check out
         }
     }
