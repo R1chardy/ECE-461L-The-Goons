@@ -1,7 +1,7 @@
 import pytest_check as check
 import requests
 
-def check_add_existing_account():
+def test_check_add_existing_account():
     url = 'http://127.0.0.1:5000/add_account'
     
     data = {'username': 'aryanj179', 'password': 'password123'}
@@ -10,10 +10,10 @@ def check_add_existing_account():
 
     response = requests.post(url, json=data, headers=headers)
 
-    #print(response.json().get('message'))
-    assert(check.equal(response.json().get('message'), 'Username already exists'))
+    # print(response.json().get('message'))
+    check.equal(response.json().get('message'), 'Username already exists')
 
-def check_add_null_account():
+def test_check_add_null_account():
     url = 'http://127.0.0.1:5000/add_account'
     
     data = {'username': 'aryanj179', 'password': ''}
@@ -23,9 +23,9 @@ def check_add_null_account():
     response = requests.post(url, json=data, headers=headers)
 
     #print(response.json().get('message'))
-    assert(check.equal(response.json().get('message'), 'invalid input'))
+    check.equal(response.json().get('message'), 'invalid input')
 
-def check_check_out_negative_quantity():
+def test_check_check_out_negative_quantity():
     url = 'http://127.0.0.1:5000/check_out_hw'
 
     data = {'projectid': 'beepboop', 'quantity': -10, 'hwset': 1}
@@ -35,7 +35,7 @@ def check_check_out_negative_quantity():
     response = requests.post(url, json=data, headers=headers)
 
     #print(response.json())
-    assert(check.equal(response.json().get('message'), 'invalid input'))
+    check.equal(response.json().get('message'), 'invalid input')
     
 def check_add_account():                                                                                #invalid input
     url = 'http://127.0.0.1:5000/add_account'                   
@@ -49,15 +49,15 @@ def check_add_account():                                                        
     if response.status_code == 200:
         # Account added successfully.
         print(response.json().get('message'))
-        assert(check.equal(response.json().get('message'), 'Account added successfully.'))
+        check.equal(response.json().get('message'), 'Account added successfully.')
     elif response.status_code == 400:
         # Username already exists
         print(response.json().get('message'))
-        assert(check.equal(response.json().get('message'), 'invalid input'))
+        check.equal(response.json().get('message'), 'invalid input')
 
 
 
-def check_create_project_null():
+def test_check_create_project_null():
     url = 'http://127.0.0.1:5000/create_project'
     data = {'projectid': 'hi', 'name': 'world', 'description': '', 'username': 'hello'}
     
@@ -68,14 +68,14 @@ def check_create_project_null():
     if response.status_code == 200:
         #Created project
         print(response.json().get('message'))
-        assert(check.equal(response.json().get('message'), 'Successfully added new project with ID hi'))
+        check.equal(response.json().get('message'), 'Successfully added new project with ID hi')
     elif response.status_code == 400:
         #Null input for creating project fields
         print(response.json().get('message'))
-        assert(check.equal(response.json().get('message'), 'invalid input'))
+        check.equal(response.json().get('message'), 'invalid input')
         
 
-def check_create_project_username():
+def test_check_create_project_username():
     url = 'http://127.0.0.1:5000/create_project'
     data = {'projectid': 'beepboop', 'name': 'DeshplopProj', 'description': 'this is a project', 'username': 'deshplop'}
     
@@ -86,14 +86,14 @@ def check_create_project_username():
     if response.status_code == 200:
         #Created project
         print(response.json().get('message'))
-        assert(check.equal(response.json().get('message'), 'Successfully added new project with ID world'))
+        check.equal(response.json().get('message'), 'Successfully added new project with ID world')
     elif response.status_code == 400:
         #Null input for creating project fields
         print(response.json().get('message'))
-        assert(check.equal(response.json().get('message'), 'Project with id beepboop already exists'))
+        check.equal(response.json().get('message'), 'Project with id beepboop already exists')
         
 
 if __name__ == '__main__':
-    check_add_existing_account()
-    check_add_null_account()
-    check_check_out_negative_quantity()
+    test_check_add_existing_account()
+    test_check_add_null_account()
+    test_check_check_out_negative_quantity()
