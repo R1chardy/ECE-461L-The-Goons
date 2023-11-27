@@ -155,7 +155,7 @@ needs: projectid (str), hardware set (int 1 or 2), quantity (number/int)
 def check_in():
     data = request.get_json()
     valid_hwset = [1,2]
-    if data['projectid'] == '' or data['quantity'] == '' or data['hwset'] not in valid_hwset:
+    if data['projectid'] == '' or data['quantity'] == '' or data['hwset'] not in valid_hwset or data['quantity'] < 0:
         return jsonify({'message': 'invalid input',
                         'quant': 0}), 400
     
@@ -194,7 +194,7 @@ needs: projectid (str), hardware set (int 1 or 2), quantity (number/int)
 def check_out():
     data = request.get_json()
     valid_hwset = [1,2]
-    if data['projectid'] == '' or data['quantity'] == '' or data['hwset'] not in valid_hwset:
+    if data['projectid'] == '' or data['quantity'] == '' or data['hwset'] not in valid_hwset or data['quantity'] < 0:
         return jsonify({'message': 'invalid input',
                         'quant': 0}), 400
     
