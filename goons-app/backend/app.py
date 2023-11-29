@@ -16,12 +16,23 @@ hardwareSets = db["HWSets"] # hardware sets collection
 
 CORS(app, resources={r'/*': {'origins': '*'}})
 
+def valid_request(request :dict):
+    valid_hwset = [1,2]
+    for key, value in request.items():
+        if value == '': # if null is found to be another possible bad input, add it to this if statement
+            return False
+        if key == 'hwset' and value not in valid_hwset:
+            return False
+        if key == 'quantity' and value < 0:
+            return False
+    return True
+
 
 @app.route('/add_account', methods=['POST'])
 def add_account():
     data = request.get_json() # request should be a json with username/password
 
-    if data["username"] == "" or data["password"] == "":
+    if not valid_request(data):
         return jsonify({'message': 'invalid input'}), 400
 
     username = data.get('username')
@@ -39,7 +50,7 @@ def add_account():
 def login():
     data = request.get_json()  # Get the JSON data from the request body
 
-    if data["username"] == "" or data["password"] == "":
+    if not valid_request(data):
         return jsonify({'message': 'invalid input'}), 400
 
     username = data.get('username')
@@ -78,7 +89,7 @@ def get_project():
 @app.route('/join_project', methods=['POST'])
 def join_project():
     data = request.get_json() # get json form frontend
-    if data['projectid'] == '' or data['username'] == '':
+    if not valid_request(data):
         return jsonify({'message': 'invalid input'}), 400
     
     projID = data.get('projectid')
@@ -105,7 +116,7 @@ this api will get project id and username from frontend, check that the project 
 @app.route('/leave_project', methods=['POST'])
 def leave_project():
     data = request.get_json() # get json form frontend
-    if data['projectid'] == '' or data['username'] == '':
+    if not valid_request(data):        
         return jsonify({'message': 'invalid input'}), 400
     
     projID = data.get('projectid')
@@ -129,7 +140,7 @@ if so, return an error message, if not, add the project to the projects collecti
 @app.route('/create_project', methods=['POST'])
 def create_project():
     data = request.get_json()
-    if data['projectid'] == '' or data['name'] == '' or data['description'] == '' or data['username'] == '':
+    if not valid_request(data):
         return jsonify({'message': 'invalid input'}), 400
     
     projID = data.get('projectid')
@@ -154,8 +165,7 @@ needs: projectid (str), hardware set (int 1 or 2), quantity (number/int)
 @app.route('/check_in_hw', methods=['POST'])
 def check_in():
     data = request.get_json()
-    valid_hwset = [1,2]
-    if data['projectid'] == '' or data['quantity'] == '' or data['hwset'] not in valid_hwset or data['quantity'] < 0:
+    if not valid_request(data):
         return jsonify({'message': 'invalid input',
                         'quant': 0}), 400
     
@@ -193,8 +203,7 @@ needs: projectid (str), hardware set (int 1 or 2), quantity (number/int)
 @app.route('/check_out_hw', methods=['POST'])
 def check_out():
     data = request.get_json()
-    valid_hwset = [1,2]
-    if data['projectid'] == '' or data['quantity'] == '' or data['hwset'] not in valid_hwset or data['quantity'] < 0:
+    if not valid_request(data):
         return jsonify({'message': 'invalid input',
                         'quant': 0}), 400
     
@@ -213,7 +222,6 @@ def check_out():
     # if amount requested is greater than availability
     if (hwdoc['availability']) < quantity:
         quantity = hwdoc['availability']
-        # set flag for return
         message = 'Checked out '+str(quantity)+' units to project with id '+projID+' from HWSet'+str(hwset)+' because ran out'
     # now to update hwset collection
     hardwareSets.update_one({'name': 'HWSet'+str(hwset)}, {'$inc': {'availability': -1*quantity}}, upsert=True)
@@ -224,31 +232,6 @@ def check_out():
     }}, upsert=True)
     return jsonify({'message': message,
                     'quant': quantity}),200
-
-# ------------------------------------------------------------------------- 
-# deprecated
-# hardware information route
-@app.route('/get_hardware_sets', methods=['GET'])
-def get_hardware_sets():
-    data = request.get_json()
-    
-    cursor = hardwareSets.find()
-    hardwareSetsList = []
-    hardwareSet = {}
-    for document in cursor:
-        tempSet = {"name" : document["Name"] , "capacity" : document["Capacity"], "availability" : document["Availability"] , "checkedOut" : document["CheckedOut"]}
-        hardwareSetsList.append(tempSet)
-        if (data.get('name') == document["Name"]):
-            hardwareSet = tempSet
-            print(hardwareSetsList)
-            print(hardwareSet)
-
-    response_data = {
-    "hardwareSets": hardwareSetsList,
-    "hardwareSet": hardwareSet,
-    }
-
-    return jsonify(response_data), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
